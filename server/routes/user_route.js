@@ -1,0 +1,81 @@
+// Importing necessary libraries and modules
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const UserModel = mongoose.model('UserModel'); // Importing the User model
+const bcryptjs = require('bcryptjs'); // Importing bcryptjs for password hashing
+const jwt = require('jsonwebtoken'); // Importing JWT for token generation
+const config = require('../config'); // Importing configuration settings
+
+// Signup Route
+router.post("/signup", async (req, res) => {
+    const { fullName, username, email, password, profilePicture } = req.body;
+
+    try {
+        // Checking if required fields are missing
+        if (!fullName || !username || !email || !password) {
+            return res.status(400).json({ error: "One or more fields are empty" });
+        }
+
+        // Checking if the email already exists
+        const userExists = await UserModel.findOne({ email: email });
+        if (userExists) {
+            return res.status(409).json({ error: "E-mail ID already exists." }); // 409 for e-mail conflicts
+        }
+
+        // Hashing the password
+        const hashedPassword = await bcryptjs.hash(password, 16); 
+        
+        // Creating a new user with the UserModel
+        const newUser = new UserModel({
+            fullName,
+            username,
+            email,
+            password: hashedPassword,
+            profilePicture
+        });
+
+        // Saving the new user to the database
+        await newUser.save();
+        res.status(201).json({ result: "User Signed up Successfully!" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred during user registration!!" });
+    }
+});
+
+// Login Route
+router.post("/login", async (req, res) => {
+    const {email, password} = req.body;
+
+    try {
+        // Checking if required fields are missing
+        if (!email || !password) {
+            return res.status(400).json({ error: "One or more fields are empty" });
+        }
+
+        // Checking if the email is valid or not
+        const userExists = await UserModel.findOne({ email: email });
+        if (!userExists) {
+            return res.status(401).json({ error: "Invalid Credentials" }); 
+        }
+
+        // Comparing the password
+        const didMatch= await bcryptjs.compare(password, userExists.password); 
+        
+        // Checking if the password provided by the user matches the hashed password stored in the database
+        if (didMatch) {
+            // const jwtToken = jwt.sign({_id: userExists._id}, JWT_TOKEN);
+            // const userInfo = {"email": userExists.email, "fullName": userExists.fullName};
+            return res.status(200).json({ message: "Login Successful" });
+        } else {
+            return res.status(401).json({ error: "Invalid Credentials" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred during login!" });
+    }
+});
+
+// Export Router
+module.exports = router;
