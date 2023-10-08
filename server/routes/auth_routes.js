@@ -1,14 +1,16 @@
-// Importing necessary libraries and modules
-const express = require('express');
+// Authentication-related routes (register, login)
+// Importing necessary libraries and modules 
+const express = require ('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const UserModel = mongoose.model('UserModel'); // Importing the User model
+const userModel = require('../models/user_model'); // Importing the User model
 const bcryptjs = require('bcryptjs'); // Importing bcryptjs for password hashing
 const jwt = require('jsonwebtoken'); // Importing JWT for token generation
-const config = require('../config'); // Importing configuration settings
+const config = require('../config/config'); // Importing configuration settings
 
 // Signup Route
 router.post("/signup", async (req, res) => {
+    // Extract user data from the request body
     const { fullName, username, email, password, profilePicture } = req.body;
 
     try {
@@ -17,8 +19,8 @@ router.post("/signup", async (req, res) => {
             return res.status(400).json({ error: "One or more fields are empty" });
         }
 
-        // Checking if the email already exists
-        const userExists = await UserModel.findOne({ email: email });
+        // Checking if the email already exists in the database
+        const userExists = await userModel.findOne({ email: email });
         if (userExists) {
             return res.status(409).json({ error: "E-mail ID already exists." }); // 409 for e-mail conflicts
         }
@@ -26,8 +28,8 @@ router.post("/signup", async (req, res) => {
         // Hashing the password
         const hashedPassword = await bcryptjs.hash(password, 16); 
         
-        // Creating a new user with the UserModel
-        const newUser = new UserModel({
+        // Creating a new user with the TweetModel
+        const newUser = new userModel({
             fullName,
             username,
             email,
@@ -46,6 +48,7 @@ router.post("/signup", async (req, res) => {
 
 // Login Route
 router.post("/login", async (req, res) => {
+    // Extract email and password from the request body
     const {email, password} = req.body;
 
     try {
@@ -54,20 +57,22 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ error: "One or more fields are empty" });
         }
 
-        // Checking if the email is valid or not
-        const userExists = await UserModel.findOne({ email: email });
+        // Checking if the email exists in the database
+        const userExists = await userModel.findOne({ email: email });
         if (!userExists) {
             return res.status(401).json({ error: "Invalid Credentials" }); 
         }
 
-        // Comparing the password
-        const didMatch= await bcryptjs.compare(password, userExists.password); 
+        // Comparing the password with the hashed password stored in the database
+        const passwordMatch= await bcryptjs.compare(password, userExists.password); 
         
         // Checking if the password provided by the user matches the hashed password stored in the database
-        if (didMatch) {
-            // const jwtToken = jwt.sign({_id: userExists._id}, JWT_TOKEN);
-            // const userInfo = {"email": userExists.email, "fullName": userExists.fullName};
-            return res.status(200).json({ message: "Login Successful" });
+        if (passwordMatch) {
+            // Creating a JWT token with user information
+            const jwtToken = jwt.sign({_id: userExists._id}, config.JWT_SECRET);
+            const userInfo = {"email": userExists.email, "fullName": userExists.fullName};
+
+            return res.status(200).json({ result: {token: jwtToken, user: userInfo} });
         } else {
             return res.status(401).json({ error: "Invalid Credentials" });
         }
@@ -77,5 +82,5 @@ router.post("/login", async (req, res) => {
     }
 });
 
-// Export Router
+// Exporting the Router
 module.exports = router;

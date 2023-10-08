@@ -1,5 +1,6 @@
 // Importing Mongoose library for schema and model creation
 const mongoose = require('mongoose');
+const {ObjectId} = mongoose.Schema.Types;
 
 // Defining the User schema
 const userSchema = new mongoose.Schema({
@@ -35,13 +36,13 @@ const userSchema = new mongoose.Schema({
     },
     followers: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: ObjectId,
             ref: 'User', // References the 'User' model for followers
         },
     ],
     following: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: ObjectId,
             ref: 'User', // References the 'User' model for following
         },
     ],
@@ -49,7 +50,8 @@ const userSchema = new mongoose.Schema({
     timestamps: true, // Automatically manage createdAt and updatedAt timestamps
 });
 
-// Creating the User model using the schema
-const User = mongoose.model('UserModel', userSchema);
+// Creating and registering the User model using the schema
+// const UserModel = mongoose.model('UserModel', userSchema);
+// module.exports = UserModel; 
+module.exports = mongoose.model('UserModel', userSchema); // Exporting User Model
 
-module.exports = User; // Exporting the User model
