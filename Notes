@@ -1,0 +1,42 @@
+Backend Coding
+--------------------
+models: user, tweet
+routes: 
+	auth: /register, /login
+	user: /getUserById, /followUser, /unfollowUser
+	/addProfilePicture, /editprofile
+
+	tweet: /createNewTweet
+	       /getById/:id
+	       /gettweetById/:id/like
+		/gettweetById/:id/unlike
+		/gettweetById/:id/reply
+		/getAllTweets
+		/getAllTweets/:id
+		/retweet/:id
+
+FrontEnd: 
+
+	Regitration
+	login
+	updateProfilePicture, edit profile 
+	add new tweet
+	show all tweets on home page
+	like, dislike, comment, retweet
+	follow unfllow user
+	
+
+function fetchData(){
+
+	UserModel.findOne({ email }).then((user)=>log(user)).catch(err=>log(err))
+}
+
+async function fetchData(){
+
+	try{
+
+	const user =await UserModel.findOne({ email })
+	log(user)
+	}catch(error){	
+	}
+}

@@ -4,17 +4,16 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const TweetModel = mongoose.model('TweetModel'); // Importing the Tweet model
-const config = require('../config/config'); // Importing configuration settings
 const protectedRoute = require('../middleware/protectedResource'); // Importing the middleware for protecting routes
 
 //Creating Tweet Route
-router.post('/createtweet', protectedRoute, async (req, res) => {
+router.post('/api/tweet', protectedRoute, async (req, res) => {
 
     // Extracting user data from the request body
-    const { content, image, tweetedBy } = req.body;
+    const {content, image} = req.body;
 
     // Checking if required fields are missing
-    if (!content || !tweetedBy) {
+    if (!content) {
         return res.status(400).json({ error: "One or more fields are empty" });
     }
 
@@ -25,7 +24,7 @@ router.post('/createtweet', protectedRoute, async (req, res) => {
         const newTweet = new TweetModel({
             content: content,
             image: image,
-            tweetedBy: req.user
+            tweetedBy: req.user._id
         });
 
         // Saving the new tweet to the database
@@ -35,22 +34,34 @@ router.post('/createtweet', protectedRoute, async (req, res) => {
         console.error(error);
         res.status(500).json({ error: "An error occurred while creating the tweet!" });
     }
-
-    // Create a new tweet with the TweetModel
-    //    const newTweet = new TweetModel({
-    //     content: content,
-    //     image: image,
-    //     tweetedBy: req.user
-    // });
-
-    // newTweet.save()
-    // .then((newTweet)=>{
-    //     res.status(201).json({post : newTweet}); 
-    // })
-    // .catch((error) =>{
-    //     console.log(error); // Logs any errors that occur during tweet creation
-    // })
 });
 
+// Getting All Users Tweets Route
+router.get('/api/tweet', async (req, res) => {
+    try {
+        // Retrieve all tweets from the database and populate the 'tweetedBy' field with user details
+        const dbTweets = await TweetModel.find()
+            .populate('tweetedBy', '_id fullName profilePicture');
+
+        res.status(200).json({ tweets: dbTweets }); // Return the retrieved tweets as a JSON response
+    } catch (error) {
+        console.error(error); // Log any errors that occur during tweet retrieval
+        res.status(500).json({ error: 'An error occurred while fetching tweets.' }); // Return an error message for server-side errors
+    }
+});
+
+// Getting Logged In Users Tweets Route
+router.get('/myalltweets', protectedRoute,async (req, res) => {
+    try {
+        // Retrieve all tweets from the database and populate the 'tweetedBy' field with user details
+        const dbTweets = await TweetModel.find({tweetedBy: req.user._id})
+            .populate('tweetedBy', '_id fullName profilePicture');
+
+        res.status(200).json({ tweets: dbTweets }); // Return the retrieved tweets as a JSON response
+    } catch (error) {
+        console.error(error); // Log any errors that occur during tweet retrieval
+        res.status(500).json({ error: 'An error occurred while fetching tweets.' }); // Return an error message for server-side errors
+    }
+});
 // Exporting the Router
 module.exports = router;
