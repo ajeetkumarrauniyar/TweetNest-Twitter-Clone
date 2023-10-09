@@ -29,7 +29,26 @@ const upload = multer({
             return res.status(400).json({ error: "Supported File Types: .jpeg, .jpg, .png" }); // Returning an error message for unsupported file types
         }
     }
-})
+});
+
+//Uploading File
+router.post('/uploadFile', upload.single('file'), function (req, res){
+    res.json({'fileName': req.file.filename});
+});
+
+//Downloading File
+const downloadFile = (req, res) => {
+    const fileName = req.params.fileName;
+    const path = _basedir + "/uploads";
+
+    res.download(path+fileName, (error)=>{
+        if(error){
+            res.status(500).send({message: "File cannot be downloaded"+ error})
+        }
+    })
+}
+router.get('/files/:filename', downloadFile);
+
 
 // Exporting the router 
 module.exports = router; 
