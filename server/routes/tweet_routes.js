@@ -89,7 +89,7 @@ router.delete('/api/tweet/:id', protectedRoute, async (req, res) => {
         }
 
         // Removing the tweet from the database
-        await tweet.remove();
+        await tweet.deleteOne();
         res.status(200).json({ message: "Tweet deleted successfully" });
     } catch (error) {
         console.error(error);
