@@ -4,7 +4,6 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const TweetModel = mongoose.model('TweetModel'); // Importing the Tweet model
-// const UserModel = mongoose.model('UserModel'); // Importing the User model
 const protectedRoute = require('../middleware/protectedResource'); // Importing the middleware for protecting routes
 
 //Creating Tweet Route
@@ -97,8 +96,6 @@ router.delete('/api/tweet/:id', protectedRoute, async (req, res) => {
         res.status(500).json({ error: "An error occurred while deleting the tweet" });
     }
 });
-
-
 
 // Exporting the Router
 module.exports = router;
