@@ -10,19 +10,19 @@ const tweetSchema = new mongoose.Schema({
   },
   tweetedBy: {
     type: ObjectId,
-    ref: 'User', // Reference to the User schema to associate the tweet with the user who posted it
-    required: true,
+    ref: 'UserModel', // Reference to the User schema to associate the tweet with the user who posted it
+    // required: true,
   },
   likes: [
     {
       type: ObjectId,
-      ref: 'User', // Reference to the User schema to track users who liked the tweet
+      ref: 'UserModel', // Reference to the User schema to track users who liked the tweet
     },
   ],
   retweetBy: [
     {
       type: ObjectId,
-      ref: 'User', // Reference to the User schema to track users who retweeted the tweet
+      ref: 'UserModel', // Reference to the User schema to track users who retweeted the tweet
     },
   ],
   image: {

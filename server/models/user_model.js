@@ -1,5 +1,6 @@
 // Importing Mongoose library for schema and model creation
 const mongoose = require('mongoose');
+
 const {ObjectId} = mongoose.Schema.Types;
 
 // Defining the User schema
