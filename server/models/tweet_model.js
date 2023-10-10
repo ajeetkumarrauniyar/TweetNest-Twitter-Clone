@@ -19,6 +19,12 @@ const tweetSchema = new mongoose.Schema({
       ref: 'UserModel', // Reference to the User schema to track users who liked the tweet
     },
   ],
+  dislikes: [
+    {
+      type: ObjectId,
+      ref: 'UserModel', // Reference to the User schema to track users who disliked the tweet
+    },
+  ],
   retweetBy: [
     {
       type: ObjectId,

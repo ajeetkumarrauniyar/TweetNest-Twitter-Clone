@@ -99,7 +99,7 @@ router.delete('/api/tweet/:id', protectedRoute, async (req, res) => {
     }
 });
 
-// Liking a Tweet (Logged In User's) Route 
+// Like a Tweet (Logged In User's) Route 
 router.put('/api/tweet/:id/like', protectedRoute, async (req, res) => {
     const tweetId = req.params.id; // Extracting the tweet ID from the request parameters
 
@@ -124,6 +124,69 @@ router.put('/api/tweet/:id/like', protectedRoute, async (req, res) => {
         res.status(500).json({ error: "An error occurred while liking the tweet" });
     }
 });
+
+// Dislike a Tweet (Logged In User's) Route 
+router.put('/api/tweet/:id/dislike', protectedRoute, async (req, res) => {
+    const tweetId = req.params.id; // Extracting the tweet ID from the request parameters
+
+    try {
+        // Updating the tweet by adding the user's ID to the 'dislikes' array
+        const updatedTweet = await TweetModel.findByIdAndUpdate(
+            tweetId,
+            { $pull: { dislikes: req.user._id } }, // Adding the user's ID to the 'dislikes' array
+            { new: true } // Returning the updated tweet
+        )
+            .populate('tweetedBy', "_id fullName") // Populating the 'tweetedBy' field with user details
+            .exec();
+
+        if (!updatedTweet) {
+            return res.status(404).json({ error: "Tweet not found" });
+        }
+
+        // Respond with the updated tweet
+        res.json(updatedTweet);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while liking the tweet" });
+    }
+});
+
+// Retweet a Tweet (Logged In User's) Route 
+router.put('/api/tweet/:id/retweet', protectedRoute, async (req, res) => {
+    const tweetId = req.params.id; // Extracting the tweet ID from the request parameters
+
+    try {
+        // Check if the user has already retweeted this tweet
+        const userRetweeted = await TweetModel.findOne({
+            _id: tweetId,
+            retweetBy: req.user._id,
+        });
+
+        if (userRetweeted) {
+            return res.status(400).json({ error: "You've already retweeted this tweet" });
+        }
+
+        // Updating the tweet by adding the user's ID to the 'retweetBy' array
+        const updatedTweet = await TweetModel.findByIdAndUpdate(
+            tweetId,
+            { $push: { retweetBy: req.user._id } }, // Adding the user's ID to the 'retweetBy' array
+            { new: true } // Returning the updated tweet
+        )
+            .populate('tweetedBy', "_id fullName") // Populating the 'tweetedBy' field with user details
+            .exec();
+
+        if (!updatedTweet) {
+            return res.status(404).json({ error: "Tweet not found" });
+        }
+
+        // Respond with the updated tweet
+        res.json(updatedTweet);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while retweeting the tweet" });
+    }
+});
+
 
 
 // Exporting the Router
