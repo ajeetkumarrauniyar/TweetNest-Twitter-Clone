@@ -5,6 +5,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const TweetModel = mongoose.model('TweetModel'); // Importing the Tweet model
 const protectedRoute = require('../middleware/protectedResource'); // Importing the middleware for protecting routes
+const { error } = require('console');
 
 //Creating Tweet Route
 router.post('/api/tweet', protectedRoute, async (req, res) => {
@@ -41,7 +42,8 @@ router.get('/api/tweet', protectedRoute, async (req, res) => {
     try {
         // Retrieve all tweets from the database and populate the 'tweetedBy' field with user details
         const dbTweets = await TweetModel.find()
-            .populate('tweetedBy', '_id fullName profilePicture');
+            .populate('tweetedBy', '_id fullName profilePicture')
+            .sort({ createdAt: -1 }); // Sorting by 'createdAt' in descending order
         res.status(200).json({ tweets: dbTweets }); // Return the retrieved tweets as a JSON response
     } catch (error) {
         console.error(error); // Log any errors that occur during tweet retrieval
@@ -55,7 +57,7 @@ router.get('/api/tweet/:id', protectedRoute, async (req, res) => {
         // Retrieving all tweets from the database and populate the 'tweetedBy' field with user details
         const dbTweets = await TweetModel.find({ tweetedBy: req.user._id })
             .populate('tweetedBy', '_id fullName profilePicture');
-        res.status(200).json({ tweets: dbTweets }); 
+        res.status(200).json({ tweets: dbTweets });
     } catch (error) {
         console.error(error); // Log any errors that occur during tweet retrieval
         res.status(500).json({ error: 'An error occurred while fetching tweets.' }); // Return an error message for server-side errors
@@ -96,6 +98,33 @@ router.delete('/api/tweet/:id', protectedRoute, async (req, res) => {
         res.status(500).json({ error: "An error occurred while deleting the tweet" });
     }
 });
+
+// Liking a Tweet (Logged In User's) Route 
+router.put('/api/tweet/:id/like', protectedRoute, async (req, res) => {
+    const tweetId = req.params.id; // Extracting the tweet ID from the request parameters
+
+    try {
+        // Updating the tweet by adding the user's ID to the 'likes' array
+        const updatedTweet = await TweetModel.findByIdAndUpdate(
+            tweetId,
+            { $push: { likes: req.user._id } }, // Adding the user's ID to the 'likes' array
+            { new: true } // Returning the updated tweet
+        )
+            .populate('tweetedBy', "_id fullName") // Populating the 'tweetedBy' field with user details
+            .exec();
+
+        if (!updatedTweet) {
+            return res.status(404).json({ error: "Tweet not found" });
+        }
+
+        // Respond with the updated tweet
+        res.json(updatedTweet);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while liking the tweet" });
+    }
+});
+
 
 // Exporting the Router
 module.exports = router;
