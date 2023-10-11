@@ -1,9 +1,7 @@
 import './css/App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-// import PostOverview from './pages/PostOverview';
-// import Profile from './pages/Profile';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -12,9 +10,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Login />}></Route>
           <Route exact path="/login" element={<Login />}></Route>
-          <Route exact path="/signup" element={<Signup />}></Route>
-          {/* <Route exact path="/posts" element={<PostOverview />}></Route>
-          <Route exact path="/myprofile" element={<Profile />}></Route> */}
+          <Route exact path="/register" element={<Register/>}></Route>
         </Routes>
       </Router>
     </div>
