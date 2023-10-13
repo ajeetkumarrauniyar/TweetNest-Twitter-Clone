@@ -23,7 +23,7 @@ app.use(require('./routes/auth_routes'));
 // Including the user related routes, Tweet routes, File routes
 // app.use(require('./routes/user_routes'));
 app.use(require('./routes/tweet_routes'));
-app.use(require('./routes/file_routes'));
+app.use(require('./routes/file_upload_routes'));
 
 // Setting up the server port, default to 5000, using the configuration settings
 const port = config.port;

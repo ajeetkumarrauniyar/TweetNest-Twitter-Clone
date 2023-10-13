@@ -1,0 +1,9 @@
+{
+    "emmet.extensionsPath": [
+        "jsx",
+        "xml"
+    ],
+    "emmet.includeLanguages" : {
+        "javascript": "javascriptreact"
+    }
+}
