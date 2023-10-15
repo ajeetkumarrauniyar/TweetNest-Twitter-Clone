@@ -5,7 +5,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const TweetModel = mongoose.model('TweetModel'); // Importing the Tweet model
 const protectedRoute = require('../middleware/protectedResource'); // Importing the middleware for protecting routes
-const { error } = require('console');
 
 //Creating Tweet Route
 router.post('/api/tweet', protectedRoute, async (req, res) => {
