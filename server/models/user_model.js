@@ -7,21 +7,21 @@ const {ObjectId} = mongoose.Schema.Types;
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
-        required: true, // Name is a required field
+        required: true, 
     },
     username: {
         type: String,
         required: true,
-        unique: true, // Username must be unique
+        unique: true, 
     },
     email: {
         type: String,
         required: true,
-        unique: true, // Email must be unique
+        unique: true, 
     },
     password: {
         type: String,
-        required: true, // Password is a required field
+        required: true, 
     },
     profilePicture: {
         type: String,
@@ -51,8 +51,4 @@ const userSchema = new mongoose.Schema({
     timestamps: true, // Automatically manage createdAt and updatedAt timestamps
 });
 
-// Creating and registering the User model using the schema
-// const UserModel = mongoose.model('UserModel', userSchema);
-// module.exports = UserModel; 
 module.exports = mongoose.model('UserModel', userSchema); // Exporting User Model
-
