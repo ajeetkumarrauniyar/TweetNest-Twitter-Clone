@@ -8,7 +8,8 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* :root,
+:root,
 body {
-  @apply h-full bg-black;
-} */
+  /* @apply h-full bg-black; */
+  /* @apply text-white */
+}
