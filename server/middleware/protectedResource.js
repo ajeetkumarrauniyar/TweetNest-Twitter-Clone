@@ -1,10 +1,9 @@
 // Importing necessary libraries and modules
-const jwt = require('jsonwebtoken'); // Importing JWT for token verification
-const dotenv = require('dotenv').config(); // Load environment variables from .env file
+const JWT = require('jsonwebtoken'); // Importing JWT for token verification
+const dotenv = require('dotenv').config(); 
 const mongoose = require('mongoose');
 const UserModel = mongoose.model('UserModel'); // Importing the User model
 
-// Middleware for protecting resources
 module.exports = async (req, res, next) => {
     try {
         //Extracts the "authorization" header from the request, which contains a JWT token.
@@ -20,7 +19,7 @@ module.exports = async (req, res, next) => {
         const token = authorization.split(' ')[1];
 
         // Verifying the JWT token
-        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        const payload = JWT.verify(token, process.env.JWT_SECRET);
 
         const { _id } = payload;
 
