@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config();
 const mongoose = require('mongoose');
 const UserModel = mongoose.model('UserModel'); // Importing the User model
 
-module.exports = async (req, res, next) => {
+const protectedRoute  = async (req, res, next) => {
     try {
         //Extracts the "authorization" header from the request, which contains a JWT token.
         const { authorization } = req.headers; 
@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
         const token = authorization.split(' ')[1];
 
         // Verifying the JWT token
-        const payload = JWT.verify(token, process.env.JWT_SECRET);
+        const payload = JWT.verify(token, process.env.SECRET_KEY);
 
         const { _id } = payload;
 
@@ -38,3 +38,5 @@ module.exports = async (req, res, next) => {
         return res.status(401).json({ error: 'Authentication failed. Please log in.' });
     }
 };
+
+module.exports = protectedRoute;
