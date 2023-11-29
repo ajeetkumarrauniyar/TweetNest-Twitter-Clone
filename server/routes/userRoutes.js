@@ -2,18 +2,21 @@
 // Importing necessary libraries and modules 
 const express = require('express');
 const userRouter = express.Router();
-const { getUser, updateUserDetails, deleteUser, followUser, unFollowUser, userAllTweets } = require('../controllers/userController');
-const { verifyToken } = require('../middleware/verifyToken');
+const protectedRoute = require('../middleware/protectedResource');
+const userController = require('../controllers/userController');
 
-userRouter.get('/api/user/:id', getUser) // Find a user
-userRouter.put('/api/user/:id', verifyToken, updateUserDetails) // Update user details
-// userRouter.delete('/api/user/:id', verifyToken, deleteUser) // Delete user details
-
-userRouter.put('/api/user/:id/follow', followUser) // Follow user
-userRouter.put('/api/user/:id/unfollow', unFollowUser) // Unfollow user
-
-// userRouter.post('/api/user/:id/tweets', userAllTweets) // Get User Tweets
-
+// Find a user
+userRouter.get('/api/user/:id', protectedRoute, userController.getUser)
+// Update user details
+userRouter.put('/api/user/:id', protectedRoute, userController.updateUserDetails) 
+// Delete user details
+// userRouter.delete('/api/user/:id', verifyToken, deleteUser) // TODO: Delete user - Not mentioned in the documentation
+// Follow user
+userRouter.put('/api/user/:id/follow', protectedRoute, userController.followUser) 
+// Unfollow user
+userRouter.put('/api/user/:id/unfollow', protectedRoute, userController.unFollowUser) 
+// User's All tweets
+userRouter.get('/api/user/:id/tweets', protectedRoute, userController.userAllTweets) 
 
 // Exporting the Router
 module.exports = userRouter;
