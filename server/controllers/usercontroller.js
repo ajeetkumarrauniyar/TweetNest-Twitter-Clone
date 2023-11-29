@@ -1,5 +1,6 @@
 // Importing necessary libraries and modules
 const UserModel = require("../models/userModel");
+const TweetModel = require("../models/tweetModel");
 
 // Find User by ID
 exports.getUser = async (req, res) => {
@@ -57,7 +58,7 @@ exports.updateUserDetails = async (req, res) => {
   }
 };
 
-// TODO : Delete user details by ID
+// TODO : Delete user details by ID - Not mentioned in documentation
 exports.deleteUser = async (req, res) => {};
 
 // Follow user
@@ -138,5 +139,21 @@ exports.unFollowUser = async (req, res) => {
   }
 };
 
-// TODO : Get user tweet
-exports.userAllTweets = async (req, res) => {};
+// Get User Tweets
+exports.userAllTweets = async (req, res) => {
+  try {
+    // Fetching tweets for a specific user ID, sorted by creation date in descending order
+    const userTweets = await TweetModel.find({ tweetedBy: req.params.id }).sort({
+      createdAt: -1,
+    });
+
+    // Respond with the user's tweets
+    res.status(200).json(userTweets);
+  } catch (error) {
+    console.error("Error while getting user's tweets:", error);
+    res.status(500).json({
+      error:
+        "An error occurred during getting user's tweets. Please try again later.",
+    });
+  }
+};
