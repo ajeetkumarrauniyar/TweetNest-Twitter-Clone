@@ -29,26 +29,25 @@ const userSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        default: null, // Optional field, default is null
     },
     dateOfBirth: {
         type: Date,
-        default: null, // Optional field, default is null
     },
     followers: [
         {
             type: ObjectId,
-            ref: 'User', // References the 'User' model for followers
+            ref: 'UserModel', // References the 'User' model for followers
         },
     ],
     following: [
         {
             type: ObjectId,
-            ref: 'User', // References the 'User' model for following
+            ref: 'UserModel', // References the 'User' model for following
         },
     ],
 }, {
     timestamps: true, // Automatically manage createdAt and updatedAt timestamps
 });
 
-module.exports = mongoose.model('UserModel', userSchema); // Exporting User Model
+// Exporting User Model
+module.exports = mongoose.model('UserModel', userSchema); 
