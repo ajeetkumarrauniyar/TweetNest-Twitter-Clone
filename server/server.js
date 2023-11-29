@@ -1,9 +1,9 @@
 // Importing necessary libraries and modules
 const express = require("express");
-const dotenv = require("dotenv").config(); 
+const dotenv = require("dotenv").config();
 const dbConnect = require("./config/dbConfig");
-const cors = require("cors"); 
-const cookieParser = require("cookie-parser"); 
+const cors = require("cors");
+// const cookieParser = require("cookie-parser");
 
 // Creating an Express application
 const app = express();
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 app.use(cors());
 
 // Configuring CookieParser
-app.use(cookieParser());
+// app.use(cookieParser());
 
 // Including the models
 require("./models/userModel");
@@ -36,7 +36,7 @@ require("./models/tweetModel");
 app.use(require("./routes/authRoutes"));
 app.use(require("./routes/userRoutes"));
 app.use(require("./routes/tweetRoutes"));
-// app.use(require('./routes/file_upload_routes')); // File routes
+app.use(require("./routes/fileRoutes"));
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {
