@@ -10,6 +10,5 @@
 
 :root,
 body {
-  @apply h-full bg-black; 
-  @apply text-white
+  @apply h-full;
 }
