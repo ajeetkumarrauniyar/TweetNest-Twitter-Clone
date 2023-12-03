@@ -190,7 +190,7 @@ exports.getAllTweets = async (req, res) => {
   try {
     // Retrieve all tweets from the database and populate the 'tweetedBy' field with user details
     const dbTweets = await TweetModel.find()
-      .populate("tweetedBy", "_id fullName profilePicture")
+      .populate("tweetedBy", "_id fullName profilePicture username email")
       .sort({ createdAt: -1 }); // Sorting by 'createdAt' in descending order
     res.status(200).json({ tweets: dbTweets }); // Return the retrieved tweets as a JSON response
   } catch (error) {

@@ -42,7 +42,7 @@ const Modal = ({ fetchTweets }) => {
     } catch (error) {
       console.error(error);
     }
-
+    setNewTweetContent("");
     setIsOpen(false);
     // setIsModalOpen(false); // Close the modal after posting the tweet
   };

@@ -4,21 +4,27 @@ import TweetCard from "./TweetCard";
 import { API_BASE_URL } from "../../config/config";
 
 const TimelineTweet = () => {
+  const Authorization = {
+    headers: {
+      "Content-Type": "Application/json",
+      authorization: "Bearer " + localStorage.getItem("JWTToken"),
+    },
+  };
+
   const [timelineTweets, setTimelineTweets] = useState([]);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/tweets`, Authorization);
 
+      setTimelineTweets(response.data.tweets);
+      // console.log(response.data.tweets);
+    } catch (error) {
+      console.error("Error fetching timeline tweets:", error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/tweets`);
-        setTimelineTweets(response.data.tweets);
-      } catch (error) {
-        console.error("Error fetching timeline tweets:", error);
-      }
-    };
-
     fetchData();
   }, []);
-
   return (
     <div className="mt-6">
       {timelineTweets.map((tweet) => (
