@@ -79,39 +79,41 @@ const TweetCard = ({ tweet, setData }) => {
       <>
         {/* User Profile Image in Following Tweets Display */}
         <div className="flex-none mr-4">
-          {tweet.tweetedBy && <img
-            src={tweet.tweetedBy.profilePicture}
-            className="h-12 w-12 rounded-full flex-none"
-            alt="Profile"
-          />}
+          {tweet.tweetedBy && (
+            <img
+              src={tweet.tweetedBy.profilePicture}
+              className="h-12 w-12 rounded-full flex-none"
+              alt="Profile"
+            />
+          )}
         </div>
 
         <div className="w-full">
           {/* Following Tweet Header Section */}
-          {/* <div className="flex items-center w-full">
+          <div className="flex items-center w-full">
             <Link to={`/profile/${tweet.tweetedBy._id}`}>
               <h4 className="font-bold text-sm text-dark ml-2">
-                {tweet.tweetedBy.fullname}
+                {tweet.tweetedBy.fullName}
               </h4>
             </Link>
-          </div> */}
+          </div>
 
-          {/* <div className="flex space-x-2">
+          <div className="flex space-x-2">
             <Link to={`/profile/${tweet.tweetedBy._id}`}>
               <span className="font-semibold text-sm text-dark ml-2">
                 @{tweet.tweetedBy.username}
               </span>
             </Link>
             <p className="text-sm text-dark ml-2"> - {dateStr}</p>
-          </div> */}
+          </div>
 
           {/* Following Tweet Content */}
-          <p className="py-2">{tweet.description}</p>
+          <p className="py-2">{tweet.content}</p>
 
           {/* Following Tweet Actions */}
           <div className="flex items-center justify-between w-full">
             {/* Likes Count */}
-            {/* <div className="flex items-center text-sm text-dark">
+            <div className="flex items-center text-sm text-dark">
               <button onClick={<></>}>
                 {tweet.likes.includes(currentUser._id) ? (
                   <FaHeart className="mr-2 my-2 cursor-pointer"></FaHeart>
@@ -120,10 +122,10 @@ const TweetCard = ({ tweet, setData }) => {
                 )}
                 {tweet.likes.length}
               </button>
-            </div> */}
+            </div>
 
             {/* Comments Count */}
-            {/* <div className="flex items-center text-sm text-dark">
+            <div className="flex items-center text-sm text-dark">
               <button onClick={<></>}>
                 {tweet.likes.includes(currentUser._id) ? (
                   <FaComment className="mr-2 my-2 cursor-pointer"></FaComment>
@@ -132,10 +134,10 @@ const TweetCard = ({ tweet, setData }) => {
                 )}
                 {tweet.replies.length}
               </button>
-            </div> */}
+            </div>
 
             {/* Retweets Count */}
-            {/* <div className="flex items-center text-sm text-dark">
+            <div className="flex items-center text-sm text-dark">
               <button onClick={<></>}>
                 {tweet.likes.includes(currentUser._id) ? (
                   <FaRetweet className="mr-2 my-2 cursor-pointer"></FaRetweet>
@@ -144,7 +146,7 @@ const TweetCard = ({ tweet, setData }) => {
                 )}
                 {tweet.retweetBy.length}
               </button>
-            </div> */}
+            </div>
           </div>
         </div>
       </>

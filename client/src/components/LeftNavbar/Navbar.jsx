@@ -12,7 +12,7 @@ import { API_BASE_URL } from "../../config/config";
 const NavBar = () => {
   const [dropdown, setDropdown] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
-  console.log("Current User in NavBar:", currentUser);
+
   const dispatch = useDispatch();
 
   const handleLogout = () => {

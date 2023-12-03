@@ -15,6 +15,18 @@ const Modal = ({ fetchTweets }) => {
     },
   };
 
+  // Fetch tweets on component mount
+  const fetchUpdatedTweets = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/tweets`, Authorization);
+      if (response.status === 200) {
+        setTweets(response.data.tweets);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // const handleTweetSubmit = () => {
   //   if (newTweetContent.trim() !== "") {
   //     const newTweet = { Content: newTweetContent };
@@ -33,18 +45,18 @@ const Modal = ({ fetchTweets }) => {
         newTweet,
         Authorization
       );
-
-      if (response.status === 200) {
+      console.log(response.status);
+      if (response.status === 201) {
+        fetchTweets();
         // Update the tweets state with the new tweet
         setTweets([response.data, ...tweets]);
-        fetchTweets();
+        // await fetchUpdatedTweets();
       }
     } catch (error) {
       console.error(error);
     }
     setNewTweetContent("");
-    setIsOpen(false);
-    // setIsModalOpen(false); // Close the modal after posting the tweet
+    setIsOpen(false); // Close the modal after posting the tweet
   };
 
   return (

@@ -38,6 +38,7 @@ const Home = () => {
       if (response.status === 200) {
         setTweets(response.data.tweets);
       }
+      console.log("Hello Browser!");
     } catch (error) {
       console.error(error);
     }
@@ -92,12 +93,12 @@ const Home = () => {
         fetchTweets
       /> */}
 
-      <div className="px-5 py-3 border-b border-lighter flex items-center justify-between">
+      {/* <div className="px-5 py-3 border-b border-lighter flex items-center justify-between">
         <h1 className="text-xl font-bold">Home</h1>
         <button className="flex-none rounded-full bg-red-500 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-darkblue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-          <Modal fetchTweets />
+          <Modal fetchTweets= {fetchTweets} />
         </button>
-      </div>
+      </div> */}
 
       <TimelineTweet />
     </>
