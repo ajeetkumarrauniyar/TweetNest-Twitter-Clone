@@ -40,3 +40,6 @@ FrontEnd:
 9.  verification system that allows notable individuals or brands to have a verified badge on their profiles, signifying their authenticity. Can be done by verifying the e-mail id & mobile number; 1 USER = 1 E-mail & 1 Mobile Number
 10. Search Functionality: to find specific users, hashtags, or topics.
 11. Profile Customization: Users can customize the appearance of their profiles to some extent, such as choosing a profile picture, header image, and writing a bio.
+12. TODO: Navigate the user to a destination after successful login
+13. Remove userId: "655ecd9372a6a77b31be6a13" from the req. body from the loginController
+14. Replace SweetAlert with react-hot-toast

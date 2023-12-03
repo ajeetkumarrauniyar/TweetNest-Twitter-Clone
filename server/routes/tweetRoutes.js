@@ -16,7 +16,7 @@ tweetRouter.put('/api/tweet/:id/reply', protectedRoute, tweetController.reply);
 // Get a single tweet detail
 tweetRouter.get('/api/tweet/:id', protectedRoute, tweetController.tweetDetails);
 // Get All Tweets Details
-tweetRouter.get('/api/tweet', protectedRoute, tweetController.getAllTweets);
+tweetRouter.get('/api/tweets', protectedRoute, tweetController.getAllTweets);
 // Delete a Tweet
 tweetRouter.delete('/api/tweet/:id', protectedRoute, tweetController.deleteTweet);
 // Retweet a Tweet

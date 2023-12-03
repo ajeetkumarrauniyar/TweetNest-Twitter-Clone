@@ -1,13 +1,13 @@
 //Importing libraries and modules
 import React, { useState } from "react";
-import LoginBanner from "../../assets/images/banner.jpeg";
+import LoginBanner from "../assets/images/banner.jpeg";
 // import TweetNestLogo from "../../assets/images/logo512.png";
 import axios from "axios"; // Axios library for making HTTP requests
-import { API_BASE_URL } from "../../config/config";
+import { API_BASE_URL } from "../config/config";
 import SweetAlert from "sweetalert2"; // SweetAlert for displaying alerts
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loginStart, loginSuccess, loginFailed } from "../../redux/userSlice";
+import { loginStart, loginSuccess, loginFailed } from "../redux/userSlice";
 
 const Login = () => {
   // Defining and initializing state variables
@@ -50,13 +50,16 @@ const Login = () => {
       if (response) {
         setLoading(false); // Hide loading icon
 
+        // Saving the JWT token and user data in the browser's localStorage
+        localStorage.setItem("JWTToken", response.data.result.token);
+        localStorage.setItem(
+          "user",
+          JSON.stringify(response.data.result.userId)
+        );
+
         //Dispatching the data to the action type in Redux Tool
         dispatch(loginStart());
         dispatch(loginSuccess(response.data.result.userId));
-
-        // Saving the JWT token and user data in the browser's localStorage
-        localStorage.setItem("JWTToken", response.data.result.token);
-        localStorage.setItem("user", JSON.stringify(response.data.result.userId));
 
         // Navigate the user to a destination after successful login
         navigate("/");

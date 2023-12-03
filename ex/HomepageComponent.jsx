@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { FaPlusCircle, FaImage, FaFilm, FaRegSmile } from "react-icons/fa";
 
-import { tabs, trending, friends, following } from "../client/src/components/Common/Configuration";
+import {
+  tabs,
+  trending,
+  friends,
+  following,
+} from "../client/src/components/Common/Configuration";
 const HomepageComponent = () => {
   const [id, setId] = useState("home");
   const [dropdown, setDropdown] = useState(false);
@@ -117,10 +122,10 @@ const HomepageComponent = () => {
       {/* Middle Part - Tweets Feed Section */}
       <div className="w-full md:w-1/2 h-full overflow-y-scroll">
         {/* Header Section */}
-        <div className="px-5 py-3 border-b border-lighter flex items-center justify-between">
+        {/* <div className="px-5 py-3 border-b border-lighter flex items-center justify-between">
           <h1 className="text-xl font-bold">Home</h1>
           <i className="far fa-star text-xl text-blue"></i>
-        </div>
+        </div> */}
 
         {/* Tweet Input */}
         <div className="px-5 py-3 border-b-8 border-lighter flex">
@@ -168,7 +173,7 @@ const HomepageComponent = () => {
           </form>
         </div>
 
-        {/* Tweet Button */}
+        {/* Tweet Card */}
         <div className="flex flex-col-reverse">
           {tweets.map((tweet, index) => (
             <div
@@ -225,8 +230,8 @@ const HomepageComponent = () => {
             key={index}
             className="w-full p-4 border-b hover:bg-lighter flex"
           >
+            {/* User Profile Image in Following Tweets Display */}
             <div className="flex-none mr-4">
-              {/* User Profile Image in Following Tweets Display */}
               <img
                 src={follow.src}
                 className="h-12 w-12 rounded-full flex-none"

@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import SweetAlert from "sweetalert2";
-import { API_BASE_URL } from "../../config/config";
-import RegisterBanner from "../../assets/images/bannerregistration.jpeg";
-import { loginStart, loginSuccess, loginFailed } from "../../redux/userSlice";
+import { API_BASE_URL } from "../config/config";
+import RegisterBanner from "../assets/images/bannerregistration.jpeg";
+import { loginStart, loginSuccess, loginFailed } from "../redux/userSlice";
 
 const Register = () => {
   // Defining and initializing state variables
@@ -126,7 +126,7 @@ const Register = () => {
               className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
               id="fullName"
               name="fullName"
-              placeholder="Enter your first name"
+              placeholder="Enter your name"
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
@@ -268,7 +268,7 @@ const Register = () => {
                 fill="currentColor"
               />
             </svg>
-            Login
+            Register
             {/* For Loading Icon  */}
             {/* {loading ? <span role="status" aria-hidden="true"></span> : ""} */}
           </button>

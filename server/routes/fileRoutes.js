@@ -7,7 +7,7 @@ const { uploadProfileImage, downloadFile } = require('../controllers/fileControl
 // Upload user profile picture
 fileRouter.post('/api/user/:id/uploadProfileImage', protectedRoute, uploadProfileImage);
 // Download profile picture
-// fileRouter.get('/api/user/:id/downloadProfileImage/:fileName', protectedRoute, downloadFile); // TODO:  NOT Need to download profile picture
+fileRouter.get('/api/user/:id/downloadProfileImage/:fileName', protectedRoute, downloadFile); // TODO:  NOT Need to download profile picture
 
 // Exporting the Router
 module.exports = fileRouter;

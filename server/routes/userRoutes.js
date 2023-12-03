@@ -9,8 +9,8 @@ const userController = require('../controllers/userController');
 userRouter.get('/api/user/:id', protectedRoute, userController.getUser)
 // Update user details
 userRouter.put('/api/user/:id', protectedRoute, userController.updateUserDetails) 
-// Delete user details
-// userRouter.delete('/api/user/:id', verifyToken, deleteUser) // TODO: Delete user - Not mentioned in the documentation
+// Delete user details  // TODO: Delete user - Not mentioned in the documentation
+// userRouter.delete('/api/user/:id', verifyToken, deleteUser)
 // Follow user
 userRouter.put('/api/user/:id/follow', protectedRoute, userController.followUser) 
 // Unfollow user
