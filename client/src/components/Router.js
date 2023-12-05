@@ -13,7 +13,9 @@ import { useSelector } from "react-redux";
 
 const AppRouter = () => {
   const Layout = () => {
-    const { currentUser } = useSelector((state) => state.user);
+    const  currentUser  = useSelector((state) => state.user.currentUser.id);
+    console.log(currentUser);
+
     return (
       <>
         {!currentUser ? (

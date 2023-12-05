@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { API_BASE_URL } from "../../config/config";
 import formatDistance from "date-fns/formatDistance";
 
-import { useEffect } from "react";
+
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -15,65 +15,33 @@ import {
   FaRetweet,
 } from "react-icons/fa";
 
-const TweetCard = ({ tweet, setData }) => {
+const TweetCard = ({ tweet, fetchData }) => {
   const Authorization = {
     headers: {
       "Content-Type": "Application/json",
       authorization: "Bearer " + localStorage.getItem("JWTToken"),
     },
   };
-  const { currentUser } = useSelector((state) => state.user);
-
-  console.log(tweet);
-  // debugger;
-  // const [userData, setUserData] = useState();
-
+  const currentUser = useSelector((state) => state.user.currentUser);
+  console.log(currentUser);
+ 
   const dateStr = formatDistance(new Date(tweet.createdAt), new Date());
-  // const location = useLocation().pathname;
 
-  // useEffect(() => {
-  // const fetchTweets = async () => {
-  //   try {
-  //     if (tweet.tweetedBy) {
-  //       const findUser = await axios.get(
-  //         `${API_BASE_URL}/tweet/${tweet.tweetedBy._id}`,
-  //         Authorization
-  //       );
-  //       console.log("User Data:", findUser.data);
-  //       setUserData(findUser.data);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching user data:", error);
-  //   }
-  // };
-  // }, [tweet.tweetedBy, tweet.likes]);
+  const handleLike = async (e) => {
+    e.preventDefault();
 
-  // const <></> = async (e) => {
-  //   e.preventDefault();
-
-  //   // console.log("Authorization Header:", Authorization.headers);
-
-  //   try {
-  //     // const like = await axios.put(`${API_BASE_URL}/tweet/${tweet._id}/like`, {
-  //     //   id: currentUser._id,
-  //     // });
-
-  //     if (location.includes("profile")) {
-  //       // const newData = await axios.get(`${API_BASE_URL}/user/${id}/tweets`);
-  //       // setData(newData.data);
-  //     } else if (location.includes("explore")) {
-  //       // const newData = await axios.get(`${API_BASE_URL}/tweets/explore`);
-  //       // setData(newData.data);
-  //     } else {
-  //       const newData = await axios.get(`${API_BASE_URL}/tweets`);
-  //       setData(newData.data);
-  //     }
-  //   } catch (err) {
-  //     console.log("error", err);
-  //   }
-  // };
-  console.log(tweet.tweetedBy.profilePicture);
-
+    try {
+      const like = await axios.put(
+        `${API_BASE_URL}/tweet/${tweet._id}/like`,
+        {},
+        Authorization
+      );
+      fetchData();
+      console.log(like);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   return (
     <div className="w-full p-4 border-b hover:bg-lighter flex">
       <>
@@ -114,8 +82,8 @@ const TweetCard = ({ tweet, setData }) => {
           <div className="flex items-center justify-between w-full">
             {/* Likes Count */}
             <div className="flex items-center text-sm text-dark">
-              <button onClick={<></>}>
-                {tweet.likes.includes(currentUser._id) ? (
+              <button onClick={handleLike}>
+                {tweet.likes.includes(currentUser.id) ? (
                   <FaHeart className="mr-2 my-2 cursor-pointer"></FaHeart>
                 ) : (
                   <FaRegHeart className="mr-2 my-2 cursor-pointer"></FaRegHeart>
@@ -123,11 +91,10 @@ const TweetCard = ({ tweet, setData }) => {
                 {tweet.likes.length}
               </button>
             </div>
-
             {/* Comments Count */}
             <div className="flex items-center text-sm text-dark">
-              <button onClick={<></>}>
-                {tweet.likes.includes(currentUser._id) ? (
+              <button onClick={handleLike}>
+                {tweet.likes.includes(currentUser.id) ? (
                   <FaComment className="mr-2 my-2 cursor-pointer"></FaComment>
                 ) : (
                   <FaRegComment className="mr-2 my-2 cursor-pointer"></FaRegComment>
@@ -138,8 +105,8 @@ const TweetCard = ({ tweet, setData }) => {
 
             {/* Retweets Count */}
             <div className="flex items-center text-sm text-dark">
-              <button onClick={<></>}>
-                {tweet.likes.includes(currentUser._id) ? (
+              <button onClick={handleLike}>
+                {tweet.likes.includes(currentUser.id) ? (
                   <FaRetweet className="mr-2 my-2 cursor-pointer"></FaRetweet>
                 ) : (
                   <FaRetweet className="mr-2 my-2 cursor-pointer"></FaRetweet>

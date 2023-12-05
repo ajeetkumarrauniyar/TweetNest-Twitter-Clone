@@ -97,6 +97,7 @@ exports.login = async (req, res) => {
         process.env.SECRET_KEY
       );
       const userInfo = {
+        id: userExists._id,
         email: userExists.email,
         fullName: userExists.fullName,
       };
@@ -104,8 +105,7 @@ exports.login = async (req, res) => {
       return res
         .cookie("access_token", JWTToken, { httpOnly: true })
         .status(200)
-        .json({ success: true, result: { token: JWTToken, userId: userExists._id, user: userInfo }, message: "User logged in successfully!" });
-        // .json({ result: { token: JWTToken, user: userInfo } });
+        .json({ success: true, result: { token: JWTToken, user: userInfo }, message: "User logged in successfully!" });
     } else {
       return res.status(401).json({ error: "Invalid email or password." });
     }

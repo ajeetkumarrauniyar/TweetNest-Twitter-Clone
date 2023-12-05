@@ -38,7 +38,7 @@ const TimelineTweet = () => {
 
       {timelineTweets.map((tweet) => (
         <div key={tweet._id} className="p-2">
-          <TweetCard tweet={tweet} setData={setTimelineTweets} />
+          <TweetCard tweet={tweet} setData={setTimelineTweets} fetchData= {fetchData} />
         </div>
       ))}
     </div>

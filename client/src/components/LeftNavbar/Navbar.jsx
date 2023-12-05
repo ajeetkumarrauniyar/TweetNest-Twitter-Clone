@@ -7,11 +7,10 @@ import { FaHashtag, FaUser } from "react-icons/fa";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/userSlice";
-import { API_BASE_URL } from "../../config/config";
 
 const NavBar = () => {
   const [dropdown, setDropdown] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user.currentUser);
 
   const dispatch = useDispatch();
 
@@ -51,7 +50,7 @@ const NavBar = () => {
             </p>
           </div>
         </Link>
-        <Link to="/profile">
+        <Link to="/tweets">
           <div className="flex items-center space-x-6 px-2 py-4 hover:bg-slate-200 rounded-full cursor-pointer">
             <FaUser className="text-2xl mr-2 text-left" />
             <p className="text-lg font-semibold text-left hidden lg:block">

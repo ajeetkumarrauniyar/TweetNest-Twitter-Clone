@@ -54,12 +54,12 @@ const Login = () => {
         localStorage.setItem("JWTToken", response.data.result.token);
         localStorage.setItem(
           "user",
-          JSON.stringify(response.data.result.userId)
+          JSON.stringify(response.data.result.user)
         );
 
         //Dispatching the data to the action type in Redux Tool
         dispatch(loginStart());
-        dispatch(loginSuccess(response.data.result.userId));
+        dispatch(loginSuccess(response.data.result.user));
 
         // Navigate the user to a destination after successful login
         navigate("/");
@@ -69,7 +69,7 @@ const Login = () => {
           title: "LoggedIn Successfully",
         });
 
-        console.log("LogIn successful:", response.data);
+        // console.log("LogIn successful:", response.data);
       }
 
       // Resetting (Clearing) the input fields
