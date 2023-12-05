@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { API_BASE_URL } from "../../config/config";
+import { API_BASE_URL, Authorization } from "../../config/config";
 import formatDistance from "date-fns/formatDistance";
 
 
@@ -16,14 +16,8 @@ import {
 } from "react-icons/fa";
 
 const TweetCard = ({ tweet, fetchData }) => {
-  const Authorization = {
-    headers: {
-      "Content-Type": "Application/json",
-      authorization: "Bearer " + localStorage.getItem("JWTToken"),
-    },
-  };
+
   const currentUser = useSelector((state) => state.user.currentUser);
-  // console.log(currentUser);
  
   const dateStr = formatDistance(new Date(tweet.createdAt), new Date());
 
@@ -37,7 +31,6 @@ const TweetCard = ({ tweet, fetchData }) => {
         Authorization
       );
       fetchData();
-      // console.log(like);
     } catch (error) {
       console.log("error", error);
     }
