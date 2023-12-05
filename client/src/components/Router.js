@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
@@ -8,14 +7,11 @@ import Profile from "../pages/ProfileDetails";
 import Tweet from "../pages/TweetDetails";
 import Navbar from "./LeftNavbar/Navbar";
 import Error from "../pages/Error";
-
 import { useSelector } from "react-redux";
 
 const AppRouter = () => {
   const Layout = () => {
     const  currentUser  = useSelector((state) => state.user.currentUser.id);
-    console.log(currentUser);
-
     return (
       <>
         {!currentUser ? (
