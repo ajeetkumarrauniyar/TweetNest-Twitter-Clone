@@ -17,8 +17,9 @@ dbConnect();
 // Body parsing middleware of incoming JSON requests
 app.use(express.json());
 
+// Log the incoming JSON data (Middleware)
 app.use((req, res, next) => {
-  console.log("Incoming JSON data:", req.body); // Log the incoming JSON data
+  console.log("Incoming JSON data:", req.body); 
   next();
 });
 

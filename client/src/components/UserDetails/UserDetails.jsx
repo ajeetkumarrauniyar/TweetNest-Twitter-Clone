@@ -13,7 +13,7 @@ const UserDetails = ({ setUserData, userData }) => {
         const userProfile = await axios.get(`/users/find/${id}`);
         setUserData(userProfile.data);
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     };
     fetchData();

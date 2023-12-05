@@ -23,7 +23,7 @@ const TweetCard = ({ tweet, fetchData }) => {
     },
   };
   const currentUser = useSelector((state) => state.user.currentUser);
-  console.log(currentUser);
+  // console.log(currentUser);
  
   const dateStr = formatDistance(new Date(tweet.createdAt), new Date());
 
@@ -37,7 +37,7 @@ const TweetCard = ({ tweet, fetchData }) => {
         Authorization
       );
       fetchData();
-      console.log(like);
+      // console.log(like);
     } catch (error) {
       console.log("error", error);
     }

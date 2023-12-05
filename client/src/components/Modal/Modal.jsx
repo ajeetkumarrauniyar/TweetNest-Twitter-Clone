@@ -27,14 +27,6 @@ const Modal = ({ fetchTweets }) => {
     }
   };
 
-  // const handleTweetSubmit = () => {
-  //   if (newTweetContent.trim() !== "") {
-  //     const newTweet = { Content: newTweetContent };
-  //     addNewTweet(newTweet);
-  //     setNewTweetContent("");
-  //   }
-  // };
-
   const newTweet = { content: newTweetContent };
 
   const addNewTweet = async () => {
@@ -45,7 +37,7 @@ const Modal = ({ fetchTweets }) => {
         newTweet,
         Authorization
       );
-      console.log(response.status);
+      // console.log(response.status);
       if (response.status === 201) {
         fetchTweets();
         // Update the tweets state with the new tweet
