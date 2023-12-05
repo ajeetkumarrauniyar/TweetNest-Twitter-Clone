@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TweetCard from "./TweetCard";
-import { API_BASE_URL } from "../../config/config";
+import { API_BASE_URL, Authorization } from "../../config/config";
 import Modal from "../Modal/Modal";
 
 const TimelineTweet = () => {
-  const Authorization = {
-    headers: {
-      "Content-Type": "Application/json",
-      authorization: "Bearer " + localStorage.getItem("JWTToken"),
-    },
-  };
 
   const [timelineTweets, setTimelineTweets] = useState([]);
 
