@@ -1,5 +1,6 @@
 import React from "react";
 
+// Header component with a tweet button
 const Header = ({ handleTweetButtonClick }) => {
   return (
     <div className="px-5 py-3 border-b border-lighter flex items-center justify-between">

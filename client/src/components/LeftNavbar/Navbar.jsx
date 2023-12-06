@@ -1,19 +1,26 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { FaPlusCircle } from "react-icons/fa";
+// Importing individual icons for use
+import { FaPlusCircle, FaHashtag, FaUser } from "react-icons/fa";
 import { IoIosHome } from "react-icons/io";
-import { FaHashtag, FaUser } from "react-icons/fa";
 
+// Redux hooks for state management
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/userSlice";
 
 const NavBar = () => {
+  // State for handling user profile dropdown visibility
   const [dropdown, setDropdown] = useState(false);
-  const { currentUser } = useSelector((state) => state.user.currentUser);
 
+  // Get current user from Redux store
+  const { currentUser } = useSelector((state) => state.user.currentUser);
+  console.log(currentUser);
+
+  // Dispatch function for handling user logout
   const dispatch = useDispatch();
 
+  // Function to handle user logout
   const handleLogout = () => {
     dispatch(logout());
     // Clear user-related data from local storage
@@ -35,6 +42,7 @@ const NavBar = () => {
 
         {/* Navigation Tabs */}
         <Link to="/">
+          {/* Home Tab */}
           <div className="flex items-center space-x-6 px-2 py-2 hover:bg-slate-200 rounded-full cursor-pointer">
             <IoIosHome className="text-2xl mr-2 text-left" />
             <p className="text-lg font-semibold text-left hidden lg:block">
@@ -43,6 +51,7 @@ const NavBar = () => {
           </div>
         </Link>
         <Link to="/tweets">
+          {/* Explore Tab */}
           <div className="flex items-center space-x-6 px-2 py-2 hover:bg-slate-200 rounded-full cursor-pointer">
             <FaHashtag className="text-2xl mr-2 text-left" />
             <p className="text-lg font-semibold text-left hidden lg:block">
@@ -51,6 +60,7 @@ const NavBar = () => {
           </div>
         </Link>
         <Link to="/tweets">
+          {/* Profile Tab */}
           <div className="flex items-center space-x-6 px-2 py-4 hover:bg-slate-200 rounded-full cursor-pointer">
             <FaUser className="text-2xl mr-2 text-left" />
             <p className="text-lg font-semibold text-left hidden lg:block">
@@ -82,10 +92,9 @@ const NavBar = () => {
           />
 
           <div className="hidden lg:block ml-4">
-            {/* Accessing full name and email from currentUser */}
+            {/* Displaying full name and email from currentUser */}
             <p className="text-sm font-bold leading-tight">@{currentUser}</p>
             <p className="text-sm leading-tight">
-              {" "}
               @{currentUser && currentUser.email}
             </p>
           </div>
@@ -96,7 +105,6 @@ const NavBar = () => {
           <div className="absolute bottom-0 left-0 w-52 rounded-lg shadow-md border-lightest bg-white mb-16">
             {/* Logout Button */}
             <button
-              // onClick={() => setDropdown(false)}
               className="w-full text-left hover:bg-lightest  border-lighter p-3 test-sm focus:outline-none"
               onClick={handleLogout}
             >

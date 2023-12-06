@@ -30,7 +30,6 @@ FrontEnd:
     // To Do's
 
 1.  Eg. john-doe In the UI we will display username as @john-doe (@ in the front)
-2.  Note: mongoose will auto convert date and store it in DB. formatting the date and deciding how to display it in user readable format should be handled from UI side.
 3.  we will need to populate data of all the users who follow to show in the UI.
 4.  a. Get a single user details - populate following and followers data
 5.  Use of Node Mailer
@@ -40,6 +39,3 @@ FrontEnd:
 9.  verification system that allows notable individuals or brands to have a verified badge on their profiles, signifying their authenticity. Can be done by verifying the e-mail id & mobile number; 1 USER = 1 E-mail & 1 Mobile Number
 10. Search Functionality: to find specific users, hashtags, or topics.
 11. Profile Customization: Users can customize the appearance of their profiles to some extent, such as choosing a profile picture, header image, and writing a bio.
-12. TODO: Navigate the user to a destination after successful login
-13. Remove userId: "655ecd9372a6a77b31be6a13" from the req. body from the loginController
-14. Replace SweetAlert with react-hot-toast
