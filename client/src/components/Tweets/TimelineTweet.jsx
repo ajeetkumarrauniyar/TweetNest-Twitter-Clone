@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TweetCard from "./TweetCard";
 import { API_BASE_URL, Authorization } from "../../config/config";
-import Modal from "../Modal/Modal";
+import Modal from "../Modal/CreateTweet";
 
 const TimelineTweet = () => {
-
   const [timelineTweets, setTimelineTweets] = useState([]);
 
   const fetchData = async () => {
@@ -32,7 +31,11 @@ const TimelineTweet = () => {
 
       {timelineTweets.map((tweet) => (
         <div key={tweet._id} className="p-2">
-          <TweetCard tweet={tweet} setData={setTimelineTweets} fetchData= {fetchData} />
+          <TweetCard
+            tweet={tweet}
+            setData={setTimelineTweets}
+            fetchData={fetchData}
+          />
         </div>
       ))}
     </div>
