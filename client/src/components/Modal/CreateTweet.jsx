@@ -1,19 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { API_BASE_URL } from "../../config/config";
+import { API_BASE_URL, Authorization } from "../../config/config";
 
 const Modal = ({ fetchTweets }) => {
   const [tweets, setTweets] = useState([]);
   const [newTweetContent, setNewTweetContent] = useState("");
-  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
-  const Authorization = {
-    headers: {
-      "Content-Type": "Application/json",
-      authorization: "Bearer " + localStorage.getItem("JWTToken"),
-    },
-  };
 
   // Fetch tweets on component mount
   const fetchUpdatedTweets = async () => {
