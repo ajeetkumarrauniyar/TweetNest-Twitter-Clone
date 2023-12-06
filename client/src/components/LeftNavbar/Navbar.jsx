@@ -59,7 +59,7 @@ const NavBar = () => {
             </p>
           </div>
         </Link>
-        <Link to="/tweets">
+        <Link to="/profile">
           {/* Profile Tab */}
           <div className="flex items-center space-x-6 px-2 py-4 hover:bg-slate-200 rounded-full cursor-pointer">
             <FaUser className="text-2xl mr-2 text-left" />

@@ -13,7 +13,6 @@ import {
   FaTrash,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
-import ReplyModal from "../Modal/ReplyModal";
 
 const TweetCard = ({ tweet, fetchData }) => {
   // Get current user from Redux store

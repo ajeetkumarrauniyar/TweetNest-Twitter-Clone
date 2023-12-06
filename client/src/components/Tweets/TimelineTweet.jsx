@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import TweetCard from "./TweetCard";
 import { API_BASE_URL, Authorization } from "../../config/config";
+import TweetCard from "./TweetCard";
 import Modal from "../Modal/CreateTweet";
 
 const TimelineTweet = () => {

@@ -3,7 +3,7 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
-import Profile from "../pages/ProfileDetails";
+import Profile from "../components/User/Profile";
 import Tweet from "../pages/TweetDetails";
 import Navbar from "./LeftNavbar/Navbar";
 import Error from "../pages/Error";
@@ -39,7 +39,6 @@ const AppRouter = () => {
 
             {/* Right Sidebar (hidden on smaller screens) */}
             <div className="md:block hidden w-1/12 h-full border-l border-lighter py-2 px-6 overflow-y-scroll relative">
-              {/* Uncomment if needed */}
               {/* <h1>Right</h1> */}
             </div>
           </div>
