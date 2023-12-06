@@ -16,41 +16,50 @@ import {
 } from "react-icons/fa";
 
 const TweetCard = ({ tweet, fetchData }) => {
+  // Get current user from Redux store
   const currentUser = useSelector((state) => state.user.currentUser);
 
+  // Format tweet creation date
   const dateStr = formatDistance(new Date(tweet.createdAt), new Date());
 
+  // Handle like and dislike functionality
   const handleLikeAndDislike = async (e) => {
     e.preventDefault();
 
     try {
+      // Send a request to like or dislike the tweet
       const likeAndDislike = await axios.put(
         `${API_BASE_URL}/tweet/${tweet._id}/likeAndDislike`,
         {},
         Authorization
       );
 
-      
+      // Fetch updated tweet data
       fetchData();
     } catch (error) {
       console.log("error", error);
     }
   };
 
+  // Handle tweet deletion
   const handleDeleteTweet = async (e) => {
     e.preventDefault();
 
     try {
+      // Send a request to delete the tweet
       const deleteTweet = await axios.delete(
         `${API_BASE_URL}/tweet/${tweet._id}`,
         Authorization
       );
+
       console.log(deleteTweet);
+      // Fetch updated tweet data
       fetchData();
     } catch (error) {
       console.log("error", error);
     }
   };
+
   return (
     <div className="w-full p-4 border-b hover:bg-lighter flex">
       <>
@@ -76,8 +85,12 @@ const TweetCard = ({ tweet, fetchData }) => {
               </Link>
             </div>
 
+            {/* Delete tweet button */}
             <div className="float-right">
-                <FaTrash className="cursor-pointer" onClick={handleDeleteTweet}></FaTrash>
+              <FaTrash
+                className="cursor-pointer"
+                onClick={handleDeleteTweet}
+              ></FaTrash>
             </div>
           </div>
 
@@ -106,6 +119,7 @@ const TweetCard = ({ tweet, fetchData }) => {
                 {tweet.likes.length}
               </button>
             </div>
+
             {/* Comments Count */}
             <div className="flex items-center text-sm text-dark">
               <button>
