@@ -1,38 +1,35 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API_BASE_URL, Authorization } from "../../config/config";
+import EditProfile from "./EditProfile";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
-
   const [profilePic, setProfilePic] = useState(
     "https://pbs.twimg.com/profile_images/1254779846615420930/7I4kP65u_400x400.jpg"
   );
-
   const [userBeingViewed, setUserBeingViewed] = useState(null);
-  const dispatch = useDispatch();
+  const [isEditProfileOpen, setEditProfileOpen] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/user/${currentUser._id}`,
+          `${API_BASE_URL}/user/${currentUser.id}`, {},
           Authorization
         );
-        console.log("Response:", response);
         const user = response.data.result.user;
-        console.log("user:", user);
         setUserBeingViewed(user);
       } catch (error) {
         console.error("Error fetching user:", error);
-        // Handle error
+        toast.error("Failed to fetch user. Please try again.");
       }
     };
 
     if (currentUser._id) {
-      console.log("currentUser._id:", currentUser._id);
       fetchUser();
     }
   }, [currentUser._id]);
@@ -49,23 +46,21 @@ const Profile = () => {
 
       try {
         const uploadProfileImage = await axios.post(
-          `${API_BASE_URL}/user/${currentUser._id}/uploadProfileImage`,
+          `${API_BASE_URL}/user/${currentUser.id}/uploadProfileImage`,
           formData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
               authorization: "Bearer " + localStorage.getItem("JWTToken"),
             },
-          },
-          Authorization
+          }
         );
 
         const newFileName = uploadProfileImage.data.fileName;
+        console.log(newFileName);
 
         setProfilePic(
-          `${API_BASE_URL}/user/${currentUser._id}/downloadProfileImage/${newFileName}`,
-          {},
-          Authorization
+          `${API_BASE_URL}/user/${currentUser.id}/downloadProfileImage/${newFileName}`
         );
 
         if (uploadProfileImage.status === 200) {
@@ -73,7 +68,7 @@ const Profile = () => {
         }
       } catch (error) {
         console.error("Error uploading profile picture:", error);
-        toast.error("Failed to update profile picture");
+        toast.error("Failed to update profile picture. Please try again.");
       }
     }
   };
@@ -125,7 +120,10 @@ const Profile = () => {
             >
               Upload Profile Photo
             </button>
-            <button className="flex-none rounded-full bg-red-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-darkblue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+            <button
+              className="flex-none rounded-full bg-red-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-darkblue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              onClick={() => setEditProfileOpen(true)}
+            >
               Edit Profile
             </button>
             {/* Conditionally render the Follow button */}
@@ -133,6 +131,14 @@ const Profile = () => {
               <button className="flex-none rounded-full bg-red-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-darkblue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
                 Follow
               </button>
+            )}
+
+            {/* Render EditProfile as a modal */}
+            {isEditProfileOpen && (
+              <EditProfile
+                isOpen={isEditProfileOpen}
+                onClose={() => setEditProfileOpen(false)} // Close modal
+              />
             )}
           </div>
         </div>

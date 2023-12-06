@@ -3,6 +3,7 @@
 const multer = require("multer");
 const path = require("path");
 global.__basedir = path.resolve();
+const fs = require("fs");
 
 // Configuring storage for uploaded profile pictures
 const profilePicStorage = multer.diskStorage({
@@ -58,8 +59,9 @@ const uploadProfileImage = (req, res) => {
 // Download profile pictures
 const downloadFile = (req, res) => {
   try {
-    const fileName = req.params.filename;
-    const filePath = path.join(__basedir, "/uploads/", fileName);
+    const fileName = req.params.fileName;
+    // const filePath = path.join(__basedir, "/uploads/", fileName);
+    const filePath = __basedir + "/uploads/" + fileName;
 
     res.download(filePath, (error) => {
       if (error) {

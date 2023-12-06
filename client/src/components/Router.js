@@ -9,10 +9,11 @@ import Navbar from "./LeftNavbar/Navbar";
 import Error from "../pages/Error";
 import { useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
+import EditProfile from "./User/EditProfile";
 
 const AppRouter = () => {
   // Using Redux useSelector to get the current user ID
-  const currentUser = useSelector((state) => state.user.currentUser.id);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   // Layout component to determine the structure based on user authentication
   const Layout = () => {
@@ -53,12 +54,13 @@ const AppRouter = () => {
         {/* Authentication Routes */}
         <Route path="/auth/register" element={<Register />} />
         <Route path="/auth/login" element={<Login />} />
+        <Route path="/edit" element={<EditProfile />} />
 
         {/* Main Layout for Authenticated Users */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="tweets" element={<Tweet />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/tweets" element={<Tweet />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>

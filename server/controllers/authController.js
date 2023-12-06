@@ -100,6 +100,7 @@ exports.login = async (req, res) => {
         id: userExists._id,
         email: userExists.email,
         fullName: userExists.fullName,
+        profilePicture: userExists.profilePicture
       };
 
       return res

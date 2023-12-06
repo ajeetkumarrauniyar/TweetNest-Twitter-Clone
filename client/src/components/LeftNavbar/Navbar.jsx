@@ -14,7 +14,8 @@ const NavBar = () => {
   const [dropdown, setDropdown] = useState(false);
 
   // Get current user from Redux store
-  const { currentUser } = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state) => state.user.currentUser);
+  const currentUser = Object.keys(user).length === 0 ? false : true;
   console.log(currentUser);
 
   // Dispatch function for handling user logout
@@ -59,7 +60,7 @@ const NavBar = () => {
             </p>
           </div>
         </Link>
-        <Link to="/profile">
+        <Link to={`/profile/${user.id}`}>
           {/* Profile Tab */}
           <div className="flex items-center space-x-6 px-2 py-4 hover:bg-slate-200 rounded-full cursor-pointer">
             <FaUser className="text-2xl mr-2 text-left" />
@@ -70,12 +71,12 @@ const NavBar = () => {
         </Link>
 
         {/* Tweet Button */}
-        {/* <button className="text-white bg-red-500 rounded-full font-semibold focus:outline-none w-12 h-12 lg:h-auto lg:w-full p-4 hover:bg-darkblue mt-4">
+        <button className="text-white bg-red-500 rounded-full font-semibold focus:outline-none w-12 h-12 lg:h-auto lg:w-full p-4 hover:bg-darkblue mt-4">
           <p className="hidden lg:block">Tweet</p>
           <i className="lg:hidden">
             <FaPlusCircle />
           </i>
-        </button> */}
+        </button>
       </div>
 
       {/* User Profile Dropdown */}
@@ -86,7 +87,7 @@ const NavBar = () => {
         >
           {/* User Profile Image */}
           <img
-            src={currentUser && currentUser.profilePicture}
+            src={currentUser && user.profilePicture}
             className="w-10 h-10 rounded-full border border-lighter"
             alt="Profile"
           />
@@ -95,7 +96,7 @@ const NavBar = () => {
             {/* Displaying full name and email from currentUser */}
             <p className="text-sm font-bold leading-tight">@{currentUser}</p>
             <p className="text-sm leading-tight">
-              @{currentUser && currentUser.email}
+              @{currentUser && user.email}
             </p>
           </div>
           <i className="hidden lg:block fas fa-angle-down ml-auto text-lg"></i>
@@ -108,7 +109,7 @@ const NavBar = () => {
               className="w-full text-left hover:bg-lightest  border-lighter p-3 test-sm focus:outline-none"
               onClick={handleLogout}
             >
-              Log out {currentUser && currentUser.fullName}
+              Log out {currentUser && user.fullName}
             </button>
           </div>
         )}
