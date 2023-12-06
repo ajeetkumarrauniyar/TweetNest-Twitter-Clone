@@ -13,7 +13,7 @@ tweetRouter.get('/api/tweets', protectedRoute, tweetController.getAllTweets);
 tweetRouter.get('/api/tweet/:id', protectedRoute, tweetController.tweetDetails);
 // Delete a Tweet
 tweetRouter.delete('/api/tweet/:id', protectedRoute, tweetController.deleteTweet);
-// Like Tweet
+// Like & Dislike Tweet
 tweetRouter.put('/api/tweet/:id/likeAndDislike', protectedRoute, tweetController.likeAndDislike);
 // Dislike Tweet
 // tweetRouter.put('/api/tweet/:id/dislike', protectedRoute, tweetController.dislike);

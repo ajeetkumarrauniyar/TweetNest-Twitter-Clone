@@ -21,12 +21,12 @@ const TweetCard = ({ tweet, fetchData }) => {
  
   const dateStr = formatDistance(new Date(tweet.createdAt), new Date());
 
-  const handleLike = async (e) => {
+  const handleLikeAndDislike = async (e) => {
     e.preventDefault();
 
     try {
-      const like = await axios.put(
-        `${API_BASE_URL}/tweet/${tweet._id}/like`,
+      const likeAndDislike = await axios.put(
+        `${API_BASE_URL}/tweet/${tweet._id}/likeAndDislike`,
         {},
         Authorization
       );
@@ -75,7 +75,7 @@ const TweetCard = ({ tweet, fetchData }) => {
           <div className="flex items-center justify-between w-full">
             {/* Likes Count */}
             <div className="flex items-center text-sm text-dark">
-              <button onClick={handleLike}>
+              <button onClick={handleLikeAndDislike}>
                 {tweet.likes.includes(currentUser.id) ? (
                   <FaHeart className="mr-2 my-2 cursor-pointer"></FaHeart>
                 ) : (
@@ -86,7 +86,7 @@ const TweetCard = ({ tweet, fetchData }) => {
             </div>
             {/* Comments Count */}
             <div className="flex items-center text-sm text-dark">
-              <button onClick={handleLike}>
+              <button>
                 {tweet.likes.includes(currentUser.id) ? (
                   <FaComment className="mr-2 my-2 cursor-pointer"></FaComment>
                 ) : (
@@ -98,7 +98,7 @@ const TweetCard = ({ tweet, fetchData }) => {
 
             {/* Retweets Count */}
             <div className="flex items-center text-sm text-dark">
-              <button onClick={handleLike}>
+              <button>
                 {tweet.likes.includes(currentUser.id) ? (
                   <FaRetweet className="mr-2 my-2 cursor-pointer"></FaRetweet>
                 ) : (
