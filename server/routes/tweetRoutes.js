@@ -14,9 +14,9 @@ tweetRouter.get('/api/tweet/:id', protectedRoute, tweetController.tweetDetails);
 // Delete a Tweet
 tweetRouter.delete('/api/tweet/:id', protectedRoute, tweetController.deleteTweet);
 // Like Tweet
-tweetRouter.put('/api/tweet/:id/like', protectedRoute, tweetController.like);
+tweetRouter.put('/api/tweet/:id/likeAndDislike', protectedRoute, tweetController.likeAndDislike);
 // Dislike Tweet
-tweetRouter.put('/api/tweet/:id/dislike', protectedRoute, tweetController.dislike);
+// tweetRouter.put('/api/tweet/:id/dislike', protectedRoute, tweetController.dislike);
 // Reply on a  Tweet
 tweetRouter.put('/api/tweet/:id/reply', protectedRoute, tweetController.reply);
 // Retweet a Tweet

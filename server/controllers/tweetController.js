@@ -43,8 +43,8 @@ exports.createTweet = async (req, res) => {
   }
 };
 
-// Like Tweet
-exports.like = async (req, res) => {
+// Like & Dislike Tweet
+exports.likeAndDislike = async (req, res) => {
   const tweetId = req.params.id;
 
   try {
@@ -56,68 +56,109 @@ exports.like = async (req, res) => {
       return res.status(404).json({ error: "Tweet not found" });
     }
 
-    // Checking if the user has already liked the tweet
-    if (tweet.likes.includes(req.user._id)) {
-      return res
-        .status(400)
-        .json({ error: "You have already liked this tweet" });
-    }
+    const userId = req.user._id;
 
-    // Updating the tweet by adding the user's ID to the 'likes' array
+    // Check if the user has already liked the tweet
+    const hasLiked = tweet.likes.includes(userId);
+
+    // Update the tweet based on the current state (like or dislike)
+    const updateQuery = hasLiked
+      ? { $pull: { likes: userId }, $push: { dislikes: userId } }
+      : { $pull: { dislikes: userId }, $push: { likes: userId } };
+
+    // Updating the tweet
     const updatedTweet = await TweetModel.findByIdAndUpdate(
       tweetId,
-      { $push: { likes: req.user._id } }, // Adding the user's ID to the 'likes' array
-      { new: true } // Returning the updated tweet
+      updateQuery,
+      { new: true }
     )
-      .populate("tweetedBy", "_id fullName") // Populating the 'tweetedBy' field with user details
+      .populate("tweetedBy", "_id fullName")
       .exec();
 
     // Respond with the updated tweet
     res.json(updatedTweet);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "An error occurred while liking the tweet" });
+    res.status(500).json({ error: "An error occurred while updating the tweet" });
   }
 };
+
+
+// Like Tweet
+// exports.like = async (req, res) => {
+//   const tweetId = req.params.id;
+
+//   try {
+//     // Fetching the tweet to check its existence
+//     const tweet = await TweetModel.findById(tweetId);
+
+//     // Checking if the tweet exists
+//     if (!tweet) {
+//       return res.status(404).json({ error: "Tweet not found" });
+//     }
+
+//     // Checking if the user has already liked the tweet
+//     if (tweet.likes.includes(req.user._id)) {
+//       return res
+//         .status(400)
+//         .json({ error: "You have already liked this tweet" });
+//     }
+
+//     // Updating the tweet by adding the user's ID to the 'likes' array
+//     const updatedTweet = await TweetModel.findByIdAndUpdate(
+//       tweetId,
+//       { $push: { likes: req.user._id } }, // Adding the user's ID to the 'likes' array
+//       { new: true } // Returning the updated tweet
+//     )
+//       .populate("tweetedBy", "_id fullName") // Populating the 'tweetedBy' field with user details
+//       .exec();
+
+//     // Respond with the updated tweet
+//     res.json(updatedTweet);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "An error occurred while liking the tweet" });
+//   }
+// };
 
 // Dislike Tweet
-exports.dislike = async (req, res) => {
-  const tweetId = req.params.id; // Extracting the tweet ID from the request parameters
+// exports.dislike = async (req, res) => {
+//   const tweetId = req.params.id; // Extracting the tweet ID from the request parameters
 
-  try {
-    // Fetching the tweet to check its existence
-    const tweet = await TweetModel.findById(tweetId);
+//   try {
+//     // Fetching the tweet to check its existence
+//     const tweet = await TweetModel.findById(tweetId);
 
-    // Checking if the tweet exists
-    if (!tweet) {
-      return res.status(404).json({ error: "Tweet not found" });
-    }
+//     // Checking if the tweet exists
+//     if (!tweet) {
+//       return res.status(404).json({ error: "Tweet not found" });
+//     }
 
-    // Checking if the user has liked the tweet before allowing dislike
-    if (!tweet.likes.includes(req.user._id)) {
-      return res
-        .status(400)
-        .json({ error: "You can only dislike a tweet you've liked" });
-    }
+//     // Checking if the user has liked the tweet before allowing dislike
+//     if (!tweet.likes.includes(req.user._id)) {
+//       return res
+//         .status(400)
+//         .json({ error: "You can only dislike a tweet you've liked" });
+//     }
 
-    // Updating the tweet by adding the user's ID to the 'dislikes' array
-    const updatedTweet = await TweetModel.findByIdAndUpdate(
-      tweetId,
-      { $pull: { likes: req.user._id }, $push: { dislikes: req.user._id } }, // Removing from 'likes' and adding to 'dislikes'
-      { new: true } // Returning the updated tweet
-    )
-      .populate("tweetedBy", "_id fullName") // Populating the 'tweetedBy' field with user details
-      .exec();
+//     // Updating the tweet by adding the user's ID to the 'dislikes' array
+//     const updatedTweet = await TweetModel.findByIdAndUpdate(
+//       tweetId,
+//       { $pull: { likes: req.user._id }, $push: { dislikes: req.user._id } }, 
+//       { new: true } // Returning the updated tweet
+//     )
+//       .populate("tweetedBy", "_id fullName") // Populating the 'tweetedBy' field with user details
+//       .exec();
 
-    // Respond with the updated tweet
-    res.json(updatedTweet);
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while disliking the tweet" });
-  }
-};
+//     // Respond with the updated tweet
+//     res.json(updatedTweet);
+//   } catch (error) {
+//     console.error(error);
+//     res
+//       .status(500)
+//       .json({ error: "An error occurred while disliking the tweet" });
+//   }
+// };
 
 // Reply on a  Tweet
 exports.reply = async (req, res) => {
