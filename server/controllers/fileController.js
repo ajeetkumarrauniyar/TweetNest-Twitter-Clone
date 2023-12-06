@@ -22,7 +22,7 @@ const profilePicStorage = multer.diskStorage({
 const upload = multer({
   storage: profilePicStorage,
   limits: {
-    fileSize: 1024 * 1024 * 1, // Limit file size to 1MB (1,024 KB)
+    fileSize: 1024 * 1024 * 2, // Limit file size to 2MB (2,048 KB)
   },
   fileFilter: (req, file, cb) => {
     // Allow only specific image file types

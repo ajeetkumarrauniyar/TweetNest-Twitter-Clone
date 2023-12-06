@@ -26,16 +26,17 @@ FrontEnd:
     follow unfllow user
 
 
+// To Do's
 
-    // To Do's
+GET http://localhost:4000/api/user/undefined/downloadProfileImage/41zHTbeNKNL.jpg 401 (Unauthorized)
 
 1.  Eg. john-doe In the UI we will display username as @john-doe (@ in the front)
-3.  we will need to populate data of all the users who follow to show in the UI.
-4.  a. Get a single user details - populate following and followers data
-5.  Use of Node Mailer
-6.  Notifications: Provide notifications to alert users about new likes, comments, follows, and mentions.
-7.  "Direct Messages" for one-on-one or group conversations.
-8.  Delete user details by ID - Not mentioned in documentation
-9.  verification system that allows notable individuals or brands to have a verified badge on their profiles, signifying their authenticity. Can be done by verifying the e-mail id & mobile number; 1 USER = 1 E-mail & 1 Mobile Number
-10. Search Functionality: to find specific users, hashtags, or topics.
-11. Profile Customization: Users can customize the appearance of their profiles to some extent, such as choosing a profile picture, header image, and writing a bio.
+2.  we will need to populate data of all the users who follow to show in the UI.
+3.  a. Get a single user details - populate following and followers data
+4.  Use of Node Mailer
+5.  Notifications: Provide notifications to alert users about new likes, comments, follows, and mentions.
+6.  "Direct Messages" for one-on-one or group conversations.
+7.  Delete user details by ID - Not mentioned in documentation
+8.  verification system that allows notable individuals or brands to have a verified badge on their profiles, signifying their authenticity. Can be done by verifying the e-mail id & mobile number; 1 USER = 1 E-mail & 1 Mobile Number
+9.  Search Functionality: to find specific users, hashtags, or topics.
+10. Profile Customization: Users can customize the appearance of their profiles to some extent, such as choosing a profile picture, header image, and writing a bio.

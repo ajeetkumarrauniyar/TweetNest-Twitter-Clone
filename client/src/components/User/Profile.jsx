@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { API_BASE_URL, Authorization } from "../../config/config";
 
 const Profile = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -22,19 +23,22 @@ const Profile = () => {
 
       try {
         const uploadProfileImage = await axios.post(
-          `/api/user/${currentUser._id}/uploadProfileImage`,
+          `${API_BASE_URL}/user/${currentUser._id}/uploadProfileImage`,
           formData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
+              authorization: "Bearer " + localStorage.getItem("JWTToken"),
             },
-          }
+          },
+          Authorization
         );
 
         const newFileName = uploadProfileImage.data.fileName;
 
         setProfilePic(
-          `/api/user/${currentUser._id}/downloadProfileImage/${newFileName}`
+          `${API_BASE_URL}/user/${currentUser._id}/downloadProfileImage/${newFileName}`, {},
+          Authorization
         );
 
         if (uploadProfileImage.status === 200) {
