@@ -70,12 +70,12 @@ const NavBar = () => {
         </Link>
 
         {/* Tweet Button */}
-        <button className="text-white bg-red-500 rounded-full font-semibold focus:outline-none w-12 h-12 lg:h-auto lg:w-full p-4 hover:bg-darkblue mt-4">
+        {/* <button className="text-white bg-red-500 rounded-full font-semibold focus:outline-none w-12 h-12 lg:h-auto lg:w-full p-4 hover:bg-darkblue mt-4">
           <p className="hidden lg:block">Tweet</p>
           <i className="lg:hidden">
             <FaPlusCircle />
           </i>
-        </button>
+        </button> */}
       </div>
 
       {/* User Profile Dropdown */}
