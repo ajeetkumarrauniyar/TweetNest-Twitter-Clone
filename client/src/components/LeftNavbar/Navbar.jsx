@@ -16,7 +16,7 @@ const NavBar = () => {
   // Get current user from Redux store
   const user = useSelector((state) => state.user.currentUser);
   const currentUser = Object.keys(user).length === 0 ? false : true;
-  console.log(currentUser);
+  // console.log(currentUser);
 
   // Dispatch function for handling user logout
   const dispatch = useDispatch();

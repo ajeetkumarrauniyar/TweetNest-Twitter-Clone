@@ -11,6 +11,7 @@ const TimelineTweet = () => {
   // Function to fetch timeline tweets from the API
   const fetchData = async () => {
     try {
+      console.log(Authorization);
       const response = await axios.get(`${API_BASE_URL}/tweets`, Authorization);
       setTimelineTweets(response.data.tweets);
     } catch (error) {

@@ -4,6 +4,7 @@ import { API_BASE_URL, Authorization } from "../../config/config";
 import EditProfile from "./EditProfile";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -14,14 +15,18 @@ const Profile = () => {
   const [userBeingViewed, setUserBeingViewed] = useState(null);
   const [isEditProfileOpen, setEditProfileOpen] = useState(false);
 
+  const { id } = useParams();
+  console.log(id);
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/user/${currentUser.id}`, {},
+          `${API_BASE_URL}/user/${id}`,
           Authorization
         );
-        const user = response.data.result.user;
+        const user = response.data;
+        console.log(response.data);
+        console.log(user);
         setUserBeingViewed(user);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -29,10 +34,10 @@ const Profile = () => {
       }
     };
 
-    if (currentUser._id) {
+    if (id) {
       fetchUser();
     }
-  }, [currentUser._id]);
+  }, [id]);
 
   const handleUploadClick = () => {
     document.getElementById("profilePicInput").click();
