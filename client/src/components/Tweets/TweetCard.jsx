@@ -3,7 +3,6 @@ import React from "react";
 import { API_BASE_URL, Authorization } from "../../config/config";
 import formatDistance from "date-fns/formatDistance";
 
-
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -13,12 +12,12 @@ import {
   FaRegComment,
   FaComment,
   FaRetweet,
+  FaTrash,
 } from "react-icons/fa";
 
 const TweetCard = ({ tweet, fetchData }) => {
-
   const currentUser = useSelector((state) => state.user.currentUser);
- 
+
   const dateStr = formatDistance(new Date(tweet.createdAt), new Date());
 
   const handleLikeAndDislike = async (e) => {
@@ -30,6 +29,23 @@ const TweetCard = ({ tweet, fetchData }) => {
         {},
         Authorization
       );
+
+      
+      fetchData();
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const handleDeleteTweet = async (e) => {
+    e.preventDefault();
+
+    try {
+      const deleteTweet = await axios.delete(
+        `${API_BASE_URL}/tweet/${tweet._id}`,
+        Authorization
+      );
+      console.log(deleteTweet);
       fetchData();
     } catch (error) {
       console.log("error", error);
@@ -51,12 +67,18 @@ const TweetCard = ({ tweet, fetchData }) => {
 
         <div className="w-full">
           {/* Following Tweet Header Section */}
-          <div className="flex items-center w-full">
-            <Link to={`/profile/${tweet.tweetedBy._id}`}>
-              <h4 className="font-bold text-sm text-dark ml-2">
-                {tweet.tweetedBy.fullName}
-              </h4>
-            </Link>
+          <div>
+            <div className="flex items-center w-full">
+              <Link to={`/profile/${tweet.tweetedBy._id}`}>
+                <h4 className="font-bold text-sm text-dark ml-2">
+                  {tweet.tweetedBy.fullName}
+                </h4>
+              </Link>
+            </div>
+
+            <div className="float-right">
+                <FaTrash className="cursor-pointer" onClick={handleDeleteTweet}></FaTrash>
+            </div>
           </div>
 
           <div className="flex space-x-2">
