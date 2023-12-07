@@ -7,8 +7,6 @@ const EditProfile = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
 
-  // const [isOpen, setIsOpen] = useState(false);
-
   // Function to update the profile
   const updateProfile = () => {
     // Add logic to update the profile with the entered data

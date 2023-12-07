@@ -1,49 +1,38 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { API_BASE_URL, Authorization } from "../../config/config";
+import toast from "react-hot-toast";
 
-const ReplyModal = ({ tweetId, fetchReplies }) => {
+const ReplyModal = ({ tweet, fetchReplies, isOpen, onClose }) => {
   // State for managing reply content and modal visibility
   const [replyContent, setReplyContent] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
 
   // Function to add a new reply to the tweet
   const addNewReply = async () => {
     try {
-      // Creating a new reply object with the reply content
       const newReply = { content: replyContent };
-
-      // Using axios to post the new reply to the tweet
-      const response = await axios.post(
-        `${API_BASE_URL}/tweets/${tweetId}/replies`,
-        newReply,
+      const replyTweet = await axios.put(
+        `${API_BASE_URL}/tweet/${tweet._id}/reply`,
+        {},
         Authorization
       );
+      console.log(replyTweet);
 
-      // If the reply is successfully created, fetch the updated replies
-      if (response.status === 201) {
+      if (replyTweet.status === 200) {
         fetchReplies();
+        toast.success("Reply posted successfully!");
       }
     } catch (error) {
-      console.error(error);
+      toast.error("An error occurred while posting your reply.");
+      console.error("error", error);
     }
 
-    // Resetting reply content and closing the modal
     setReplyContent("");
-    setIsOpen(false);
+    onClose();
   };
 
   return (
     <>
-      {/* Button to open the reply modal */}
-      <button
-        type="button"
-        onClick={() => {
-          setIsOpen(true);
-        }}
-        className="text-blue-500 hover:underline"
-      ></button>
-
       {/* Reply Modal Component */}
       <div
         className={`fixed inset-0 modal ${
@@ -86,9 +75,7 @@ const ReplyModal = ({ tweetId, fetchReplies }) => {
               <button
                 type="button"
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                onClick={() => {
-                  setIsOpen(false);
-                }}
+                onClick={onClose}
               >
                 Cancel
               </button>

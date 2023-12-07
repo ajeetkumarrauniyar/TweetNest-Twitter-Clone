@@ -1,7 +1,10 @@
-import React from "react";
-import TimelineTweet from "../components/Tweets/TimelineTweet.jsx";
-const Home = () => {
-  return <TimelineTweet />;
-};
+import React from 'react'
+import HomeComponent from '../components/Home/Home'
 
-export default Home;
+const Home = () => {
+  return (
+    <div><HomeComponent/></div>
+  )
+}
+
+export default Home

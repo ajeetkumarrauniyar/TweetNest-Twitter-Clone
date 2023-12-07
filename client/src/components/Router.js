@@ -4,12 +4,12 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
 import Profile from "../components/User/Profile";
-import Tweet from "../pages/TweetDetails";
 import Navbar from "./LeftNavbar/Navbar";
 import Error from "../pages/Error";
 import { useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import EditProfile from "./User/EditProfile";
+import Explore from "../pages/Explore";
 
 const AppRouter = () => {
   // Using Redux useSelector to get the current user ID
@@ -59,8 +59,8 @@ const AppRouter = () => {
         {/* Main Layout for Authenticated Users */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="/explore" element={<Explore/>} />
           <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/tweets" element={<Tweet />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>

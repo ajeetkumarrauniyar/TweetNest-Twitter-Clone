@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { API_BASE_URL, Authorization } from "../../config/config";
 import formatDistance from "date-fns/formatDistance";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import ReplyModal from "../Modal/ReplyModal";
 import {
   FaRegHeart,
   FaHeart,
@@ -15,6 +16,7 @@ import {
 import toast from "react-hot-toast";
 
 const TweetCard = ({ tweet, fetchData }) => {
+  const [isReplyModalOpen, setReplyModalOpen] = useState(false);
   // Get current user from Redux store
   const currentUser = useSelector((state) => state.user.currentUser);
 
@@ -48,29 +50,6 @@ const TweetCard = ({ tweet, fetchData }) => {
     }
   };
 
-  // Handle reply functionality
-  const handleReply = async (e) => {
-    e.preventDefault();
-
-    try {
-      const replyTweet = await axios.put(
-        `${API_BASE_URL}/tweet/${tweet._id}/reply`,
-        {},
-        Authorization
-      );
-
-      if (replyTweet.status === 200) {
-        // Refetch data and show success toast
-        fetchData();
-        toast.success("Reply posted successfully!");
-      }
-    } catch (error) {
-      // Show error toast if an error occurs
-      toast.error("An error occurred while posting your reply.");
-      console.error("error", error);
-    }
-  };
-
   // Handle retweet functionality
   const handleRetweetTweet = async (e) => {
     e.preventDefault();
@@ -78,8 +57,10 @@ const TweetCard = ({ tweet, fetchData }) => {
     try {
       const retweetTweet = await axios.post(
         `${API_BASE_URL}/tweet/${tweet._id}/retweet`,
+        {},
         Authorization
       );
+      console.log(Authorization);
 
       if (retweetTweet.status === 200) {
         // Refetch data and show success toast
@@ -87,11 +68,23 @@ const TweetCard = ({ tweet, fetchData }) => {
         toast.success("Tweet retweeted successfully!");
       }
     } catch (error) {
-      // Show error toast if an error occurs
-      toast.error("An error occurred while retweeting the tweet.");
+      if (error.response) {
+        const statusCode = error.response.status;
+        if (statusCode === 400) {
+          toast.error("You have already retweeted this tweet.");
+        } else {
+          toast.error(`An error occurred: ${error.response.data.message}`);
+        }
+      } else {
+        toast.error("An unexpected error occurred. Please try again later.");
+      }
+
       console.error("error", error);
     }
   };
+
+  // Check if the tweet is a retweet
+  const isRetweet = tweet.retweetBy.length > 0;
 
   // Handle delete tweet functionality
   const handleDeleteTweet = async (e) => {
@@ -121,7 +114,14 @@ const TweetCard = ({ tweet, fetchData }) => {
       <>
         <div className="flex-none mr-4">
           {/* Display the profile picture of the user who tweeted */}
-          {tweet.tweetedBy && (
+          {isRetweet ? (
+            <img
+              src={tweet.tweetedBy.profilePicture}
+              className="h-12 w-12 rounded-full flex-none"
+              alt="Profile"
+            />
+          ) : (
+            // Original tweeter's profile picture
             <img
               src={tweet.tweetedBy.profilePicture}
               className="h-12 w-12 rounded-full flex-none"
@@ -132,6 +132,17 @@ const TweetCard = ({ tweet, fetchData }) => {
 
         <div className="w-full">
           <div>
+            {/* Display Retweet information at the top */}
+            {isRetweet && (
+              <p className="text-muted flex items-center ms-3">
+                <FaRetweet style={{ color: "#19c836" }} />
+                <span className="ml-1">
+                  {" "}
+                  Retweeted {tweet.retweetBy[0].fullName}{" "}
+                </span>
+              </p>
+            )}
+
             <div className="flex items-center w-full">
               {/* Link to the profile of the user who tweeted */}
               <Link to={`/profile/${tweet.tweetedBy._id}`}>
@@ -143,10 +154,12 @@ const TweetCard = ({ tweet, fetchData }) => {
 
             <div className="float-right">
               {/* Trash icon for deleting the tweet */}
-              <FaTrash
-                className="cursor-pointer"
-                onClick={handleDeleteTweet}
-              ></FaTrash>
+              {tweet.tweetedBy._id === currentUser.id && (
+                <FaTrash
+                  className="cursor-pointer"
+                  onClick={handleDeleteTweet}
+                ></FaTrash>
+              )}
             </div>
           </div>
 
@@ -177,7 +190,7 @@ const TweetCard = ({ tweet, fetchData }) => {
 
             {/* Reply functionality */}
             <div className="flex items-center text-sm text-dark">
-              <button onClick={handleReply}>
+              <button onClick={() => setReplyModalOpen(true)}>
                 {tweet.replies.includes(currentUser.id) ? (
                   <FaComment className="mr-2 my-2 cursor-pointer"></FaComment>
                 ) : (
@@ -198,6 +211,16 @@ const TweetCard = ({ tweet, fetchData }) => {
                 {tweet.retweetBy.length}
               </button>
             </div>
+
+            {/* Render ReplyModal as a modal */}
+            {isReplyModalOpen && (
+              <ReplyModal
+                tweetId={tweet._id}
+                fetchReplies={fetchData}
+                isOpen={isReplyModalOpen}
+                onClose={() => setReplyModalOpen(false)}
+              />
+            )}
           </div>
         </div>
       </>
