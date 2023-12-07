@@ -1,3 +1,11 @@
+## ERROR
+1.Profile Details
+EditProfile: "Unauthorized. You can only update your own user details."
+
+Invalid Time Format
+
+
+
 ## Backend Coding
 
 models: user, tweet

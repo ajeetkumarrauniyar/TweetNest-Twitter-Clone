@@ -1,15 +1,49 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { API_BASE_URL, Authorization } from "../../config/config";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
-const EditProfile = ({ isOpen, onClose }) => {
+const EditProfile = ({ isOpen, onClose, onUpdateProfile }) => {
+  // Redux state to get the current user details
+  const currentUser = useSelector((state) => state.user.currentUser);
   // State for managing input values
-  const [fullname, setFullName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
-  const [email, setEmail] = useState("");
+  const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
 
   // Function to update the profile
-  const updateProfile = () => {
-    // Add logic to update the profile with the entered data
+  const updateProfile = async () => {
+    try {
+      // Send a request to update the user details
+      const response = await axios.put(
+        `${API_BASE_URL}/user/${currentUser.id}`,
+        {
+          fullName,
+          dateOfBirth,
+          location: location,
+          description,
+        }, {},
+        Authorization
+      );
+      console.log(response);
+
+      if (response.status === 200) {
+        toast.success("Profile updated successfully");
+        // Pass the updated data to the callback
+        onUpdateProfile({
+          fullName,
+          dateOfBirth,
+          location,
+          description,
+        });
+        onClose(); // Close the modal after updating
+      }
+    } catch (error) {
+      toast.error("Failed to update profile. Please try again.");
+      console.error("Error updating profile:", error);
+    }
   };
 
   return (
@@ -18,6 +52,7 @@ const EditProfile = ({ isOpen, onClose }) => {
         isOpen ? "block" : "hidden"
       } overflow-y-auto`}
     >
+      <div className="fixed inset-0 bg-black opacity-50"></div>
       <div className="flex items-center justify-center min-h-screen text-center sm:items-center sm:p-0">
         {/* Update Profile Modal Component */}
         <div>
@@ -26,8 +61,8 @@ const EditProfile = ({ isOpen, onClose }) => {
             onClick={() => {}}
             className="text-blue-500 hover:underline"
           ></button>
-          <div className="flex items-center justify-center min-h-screen text-center sm:items-center sm:p-0">
-            <div className="p-4 rounded-lg w-80 relative transform overflow-hidden text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+          <div className="flex items-center justify-center min-h-screen text-center sm:items-center sm:p-0 ">
+            <div className="p-4 rounded-lg w-80 relative transform overflow-hidden text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg bg-slate-200">
               {/* Modal header */}
               <h2 className="font-semibold text-xl leading-7 text-gray-900">
                 Profile
@@ -48,7 +83,7 @@ const EditProfile = ({ isOpen, onClose }) => {
                         name="fullname"
                         id="fullname"
                         autoComplete="fullname"
-                        value={fullname}
+                        value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -86,13 +121,13 @@ const EditProfile = ({ isOpen, onClose }) => {
                         name="location"
                         id="location"
                         autoComplete="location"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
-                  <div className="sm:col-span-2">
+                  {/* <div className="sm:col-span-2">
                     <label
                       htmlFor="message"
                       className="block text-sm font-semibold leading-6 text-gray-900"
@@ -109,10 +144,10 @@ const EditProfile = ({ isOpen, onClose }) => {
                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       ></textarea>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 {/* Modal Footer */}
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <div className="mt-3  px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   {/* Update Button */}
                   <button
                     type="button"

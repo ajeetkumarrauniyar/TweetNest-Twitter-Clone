@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import format from "date-fns/format";
 import EditProfile from "./EditProfile";
 import { API_BASE_URL, Authorization } from "../../config/config";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import { LiaBirthdayCakeSolid } from "react-icons/lia";
+import { CiCalendarDate, CiLocationOn } from "react-icons/ci";
 
 const Profile = () => {
   // Redux state to get the current user details
@@ -85,6 +88,30 @@ const Profile = () => {
     }
   };
 
+  // Handle profile update
+  const handleUpdateProfile = (updatedData) => {
+    setUserBeingViewed((prevUser) => ({
+      ...prevUser,
+      ...updatedData,
+    }));
+  };
+
+  // Format date to a readable format
+  const formatDate = (date) => {
+    try {
+      const parsedDate = new Date(date);
+
+      if (isNaN(parsedDate.getTime())) {
+        return ""; // Return an empty string or some default value for invalid dates
+      }
+      return format(parsedDate, "MMMM d, yyyy");
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "";
+    }
+  };
+  console.log(currentUser);
+
   return (
     <div>
       {/* Banner Image */}
@@ -95,13 +122,7 @@ const Profile = () => {
           backgroundImage:
             "url(https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200)",
         }}
-      >
-        <img
-          className="opacity-0 w-full h-full"
-          src="https://pbs.twimg.com/profile_banners/2161323234/1585151401/600x200"
-          alt=""
-        />
-      </div>
+      ></div>
 
       {/* Main Content */}
       <div className="p-4">
@@ -117,7 +138,7 @@ const Profile = () => {
                 <img
                   style={{ height: "9rem", width: "9rem" }}
                   className="md rounded-full relative border-4 border-gray-900"
-                  src={profilePic}
+                  src={currentUser.profilePicture}
                   alt=""
                 />
                 <div className="absolute"></div>
@@ -160,6 +181,7 @@ const Profile = () => {
               <EditProfile
                 isOpen={isEditProfileOpen}
                 onClose={() => setEditProfileOpen(false)} // Close modal
+                onUpdateProfile={handleUpdateProfile}
               />
             )}
           </div>
@@ -170,68 +192,43 @@ const Profile = () => {
           {/* User Name and Username */}
           <div>
             <h2 className="text-xl leading-6 font-bold text-black">
-              {currentUser.name}
+              {currentUser.fullName}
             </h2>
             <p className="text-sm leading-5 font-medium text-gray-600 pb-4">
-              @{currentUser.username}
+              {currentUser.email}
             </p>
           </div>
 
           {/* User Bio */}
-          <div className="mt-3">
+          {/* <div className="mt-3">
             <p className="text-gray-500 leading-tight mb-2">
               Software Engineer / Designer / Entrepreneur <br />
               Visit my website to test a working <b>Twitter Clone.</b>
             </p>
-          </div>
+          </div> */}
 
           {/* Additional User Details */}
           <div className="flex flex-wrap mt-3">
             {/* Location */}
             <div className="flex items-center mr-4">
-              <svg
-                className="text-gray-500 w-5 h-5 mr-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 2a8 8 0 100 16 8 8 0 000-16zM0 10a10 10 0 0120 0 10 10 0 01-20 0z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <p className="text-gray-500">Lisbon, Portugal</p>
+              <CiLocationOn />
+              <p className="text-gray-500 ms-2">{currentUser.location}</p>
             </div>
 
             {/* Join Date */}
             <div className="flex items-center mr-4">
-              <svg
-                className="text-gray-500 w-5 h-5 mr-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 2a8 8 0 100 16 8 8 0 000-16zM0 10a10 10 0 0120 0 10 10 0 01-20 0z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <p className="text-gray-500">Joined April 2009</p>
+              <CiCalendarDate />
+              <p className="text-gray-500 ms-2">
+                {formatDate(currentUser.joinedDate)}
+              </p>
             </div>
 
-            {/* Placeholder */}
+            {/* DateOfBirth */}
             <div className="flex items-center">
-              <svg
-                className="text-gray-500 w-5 h-5 mr-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M2 0a2 2 0 012 2v16.5l4-4 4 4V2a2 2 0 012-2H2zm16 5.31V18a1 1 0 01-1 1H3a1 1 0 01-1-1V5.31l7 7 7-7zM7 10a1 1 0 100-2 1 1 0 000 2z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
+              <LiaBirthdayCakeSolid />
+              <p className="text-gray-500 ms-2">
+                {formatDate(currentUser.dateOfBirth)}
+              </p>
             </div>
           </div>
         </div>

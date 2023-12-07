@@ -1,6 +1,6 @@
 // Authentication-related controllers (register and login)
 // Importing necessary libraries and modules
-const userModel = require("../models/userModel"); 
+const userModel = require("../models/userModel");
 const bcryptjs = require("bcryptjs"); // Importing bcryptjs for password hashing
 const JWT = require("jsonwebtoken"); // Importing JWT for token generation
 
@@ -57,7 +57,6 @@ exports.register = async (req, res) => {
       .cookie("access_token", JWTToken, { httpOnly: true })
       .status(201)
       .json({ success: true, message: "User signed up successfully!" });
-
   } catch (error) {
     console.error("Error during user registration:", error);
     res.status(500).json({
@@ -100,13 +99,21 @@ exports.login = async (req, res) => {
         id: userExists._id,
         email: userExists.email,
         fullName: userExists.fullName,
-        profilePicture: userExists.profilePicture
+        profilePicture: userExists.profilePicture,
+        username: userExists.username,
+        location: userExists.location,
+        dateOfBirth: userExists.dateOfBirth,
+        joinedDate: userExists.createdAt,
       };
 
       return res
         .cookie("access_token", JWTToken, { httpOnly: true })
         .status(200)
-        .json({ success: true, result: { token: JWTToken, user: userInfo }, message: "User logged in successfully!" });
+        .json({
+          success: true,
+          result: { token: JWTToken, user: userInfo },
+          message: "User logged in successfully!",
+        });
     } else {
       return res.status(401).json({ error: "Invalid email or password." });
     }
