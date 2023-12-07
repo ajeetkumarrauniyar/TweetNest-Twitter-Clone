@@ -8,10 +8,13 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 import { CiCalendarDate, CiLocationOn } from "react-icons/ci";
+import { useDispatch } from "react-redux";
+import { changeProfile } from "../../redux/userSlice";
 
 const Profile = () => {
   // Redux state to get the current user details
   const currentUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
 
   // State to manage the profile picture, user being viewed, and edit profile modal visibility
   const [profilePic, setProfilePic] = useState(
@@ -72,11 +75,13 @@ const Profile = () => {
         );
 
         const newFileName = uploadProfileImage.data.fileName;
+        const newProfilePictureURL = `${API_BASE_URL}/user/${currentUser.id}/downloadProfileImage/${newFileName}`;
+
+        // Dispatch Redux action to update profile picture
+        dispatch(changeProfile(newProfilePictureURL));
 
         // Set the new profile picture URL and show success toast
-        setProfilePic(
-          `${API_BASE_URL}/user/${currentUser.id}/downloadProfileImage/${newFileName}`
-        );
+        setProfilePic(newProfilePictureURL);
 
         if (uploadProfileImage.status === 200) {
           toast.success("Profile picture updated successfully");
