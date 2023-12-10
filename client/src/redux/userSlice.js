@@ -3,6 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 // Initial state for the user slice
 const initialState = {
   currentUser: null,
+  followers: [], // Array of follower user IDs
+  following: [], // Array of following user IDs
+  followersCount: 0,
+  followingCount: 0,
   isLoading: false,
   error: false,
 };
@@ -47,6 +51,14 @@ export const userSlice = createSlice({
         state.currentUser.following.push(action.payload);
       }
     },
+    // Reducer for handling followers count
+    setFollowersCount: (state) => {
+      // state.currentUser.followersCount = state.currentUser.followers.length;
+    },
+    // Reducer for handling following count
+    setFollowingCount: (state) => {
+      // state.currentUser.followingCount = state.currentUser.following.length;
+    },
   },
 });
 
@@ -58,6 +70,8 @@ export const {
   logout,
   changeProfile,
   following,
+  setFollowersCount,
+  setFollowingCount,
 } = userSlice.actions;
 
 // Export the reducer for the user slice

@@ -82,7 +82,7 @@ const Modal = ({ fetchTweets }) => {
               ></textarea>
               {/* Icons for uploading images (placeholder) */}
               <div className="flex items-center space-x-4 mb-4">
-                <span>📷</span>
+                <span className="text-xl ps-5">📷</span>
               </div>
             </div>
 

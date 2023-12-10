@@ -71,19 +71,19 @@ const NavBar = () => {
         </Link>
 
         {/* Tweet Button */}
-        <button className="text-white bg-red-500 rounded-full font-semibold focus:outline-none w-12 h-12 lg:h-auto lg:w-full p-4 hover:bg-darkblue mt-4">
+        {/* <button className="text-white bg-red-500 rounded-full font-semibold focus:outline-none w-12 h-12 lg:h-auto lg:w-full p-4 hover:bg-darkblue mt-4">
           <p className="hidden lg:block">Tweet</p>
           <i className="lg:hidden">
             <FaPlusCircle />
           </i>
-        </button>
+        </button> */}
       </div>
 
       {/* User Profile Dropdown */}
       <div className="lg:w-full relative">
         <button
           onClick={() => setDropdown(true)}
-          className="flex items-center w-full hover:bg-lightblue rounded-full p-2 focus:outline-none"
+          className="flex items-center w-full rounded-full p-2 focus:outline-none"
         >
           {/* User Profile Image */}
           <img
@@ -94,8 +94,8 @@ const NavBar = () => {
 
           <div className="hidden lg:block ml-4">
             {/* Displaying full name and email from currentUser */}
-            <p className="text-sm font-bold leading-tight">@{currentUser}</p>
-            <p className="text-sm leading-tight">
+            <p className="text-sm font-extrabold leading-tight text-left">{currentUser && user.fullName}</p>
+            <p className="text-xs leading-tight">
               @{currentUser && user.email}
             </p>
           </div>

@@ -1,10 +1,10 @@
 import React from "react";
 import Modal from "../../components/Modal/CreateTweet";
+import TimelineTweet from "../Explore/TimelineTweet";
 
 const Home = () => {
   return (
     <>
-      Followers & Following
       {/* Header Section */}
       <div className="px-5 py-3 border-b border-lighter flex items-center justify-between">
         <h1 className="text-xl font-bold">Home</h1>
@@ -13,6 +13,7 @@ const Home = () => {
           <Modal />
         </button>
       </div>
+      <TimelineTweet/>
     </>
   );
 };

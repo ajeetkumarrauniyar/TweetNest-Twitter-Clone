@@ -3,13 +3,16 @@ import axios from "axios";
 import format from "date-fns/format";
 import EditProfile from "./EditProfile";
 import { API_BASE_URL, Authorization } from "../../config/config";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 import { CiCalendarDate, CiLocationOn } from "react-icons/ci";
-import { useDispatch } from "react-redux";
-import { changeProfile } from "../../redux/userSlice";
+import {
+  changeProfile,
+  setFollowersCount,
+  setFollowingCount,
+} from "../../redux/userSlice";
 
 const Profile = () => {
   // Redux state to get the current user details
@@ -46,6 +49,12 @@ const Profile = () => {
     if (id) {
       fetchUser();
     }
+
+    // Fetch followers count
+    dispatch(setFollowersCount());
+
+    // Fetch following count
+    dispatch(setFollowingCount());
   }, [id]);
 
   // Open the file input dialog when clicking on the "Upload Profile Photo" button
@@ -115,6 +124,7 @@ const Profile = () => {
       return "";
     }
   };
+
   console.log(currentUser);
 
   return (
@@ -242,21 +252,25 @@ const Profile = () => {
         <div className="flex mt-5">
           {/* Following Count */}
           <div className="mr-6">
-            <p className="font-bold text-white">987</p>
+            <p className="font-bold text-gray-700">
+              {currentUser.followingCount}
+            </p>
             <p className="text-gray-500 text-sm">Following</p>
           </div>
 
           {/* Followers Count */}
           <div className="mr-6">
-            <p className="font-bold text-white">1,256</p>
+            <p className="font-bold text-gray-700">
+              {currentUser.followersCount}
+            </p>
             <p className="text-gray-500 text-sm">Followers</p>
           </div>
 
           {/* Likes Count */}
-          <div className="mr-6">
-            <p className="font-bold text-white">584</p>
+          {/* <div className="mr-6">
+            <p className="font-bold text-gray-700">584</p>
             <p className="text-gray-500 text-sm">Likes</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
