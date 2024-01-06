@@ -81,9 +81,9 @@ const Modal = ({ fetchTweets }) => {
                 onChange={(e) => setNewTweetContent(e.target.value)}
               ></textarea>
               {/* Icons for uploading images (placeholder) */}
-              <div className="flex items-center space-x-4 mb-4">
-                <span className="text-xl ps-5">📷</span>
-              </div>
+              {/* <div className="flex items-center space-x-4 mb-4">
+                <span>📷</span>
+              </div> */}
             </div>
 
             {/* Buttons Section */}
